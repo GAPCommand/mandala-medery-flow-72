@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Package, Sparkles } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-import { useMandalaData } from '@/hooks/useMandalaData';
+import { useTenantData } from '@/hooks/useTenantData';
 import ProductForm from '@/components/forms/ProductForm';
 import AccessDeniedView from './components/AccessDeniedView';
 import ProductManagementContent from './components/ProductManagementContent';
@@ -15,7 +15,7 @@ interface ProductManagementModalProps {
 
 const ProductManagementModal = ({ isOpen, onClose }: ProductManagementModalProps) => {
   const { userRoles } = useAuth();
-  const { products, inventoryBatches, refetch } = useMandalaData();
+  const { products, inventoryBatches, refetch } = useTenantData();
   const [activeTab, setActiveTab] = useState<'products' | 'inventory'>('products');
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [showProductForm, setShowProductForm] = useState(false);
