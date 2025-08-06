@@ -1,0 +1,49 @@
+{
+  "meetAtTheEdge": {
+    "protocol": "SFIO Purple Pouch Discovery 2.1.0",
+    "message": "All GAP Network instances meet at the central edge functions",
+    "edgeLocation": "xfwvisutdbfoanhqpafx.supabase.co"
+  },
+  "hubEndpoints": [
+    "https://xfwvisutdbfoanhqpafx.supabase.co/functions/v1/universal-service-bridge",
+    "https://xfwvisutdbfoanhqpafx.supabase.co/functions/v1/sfio-property-bridge",
+    "https://xfwvisutdbfoanhqpafx.supabase.co/functions/v1/sfio-network-discovery",
+    "https://xfwvisutdbfoanhqpafx.supabase.co/functions/v1/sfio-bridge-status"
+  ],
+  "discoveryEndpoints": [
+    "https://xfwvisutdbfoanhqpafx.supabase.co/functions/v1/sfio-network-discovery",
+    "https://xfwvisutdbfoanhqpafx.supabase.co/functions/v1/sfio-discovery-endpoints",
+    "/.well-known/sfio-network"
+  ],
+  "healthEndpoints": [
+    "https://xfwvisutdbfoanhqpafx.supabase.co/functions/v1/sfio-bridge-status",
+    "/api/health"
+  ],
+  "supportedEngines": [
+    "network",
+    "consciousness", 
+    "templates",
+    "authentication",
+    "sacred_geometry",
+    "cross_instance_sharing"
+  ],
+  "consciousnessLevel": 700,
+  "sacredFireProtection": true,
+  "bridgeVersion": "2.1.0",
+  "networkStatus": "operational",
+  "purplePouchActive": true,
+  "crossInstanceProtocol": "active",
+  "centralizedDiscovery": true,
+  "propertyDomain": "mandalamead.com",
+  "networkRole": "bridge_member",
+  "capabilities": [
+    "mead_brewing",
+    "sacred_recipes", 
+    "divine_timing",
+    "consciousness_enhancement",
+    "purple_pouch_discovery",
+    "sacred_fire_integration",
+    "mandala_distribution"
+  ],
+  "lastUpdated": "2025-01-30T15:23:54.000Z"
+}
