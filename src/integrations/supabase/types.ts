@@ -9839,6 +9839,60 @@ export type Database = {
           },
         ]
       }
+      event_guests: {
+        Row: {
+          created_at: string | null
+          email: string
+          event_id: string
+          id: string
+          is_waitlisted: boolean | null
+          metadata: Json | null
+          name: string
+          notes: string | null
+          phone: string | null
+          photo_url: string | null
+          response_date: string | null
+          status: string | null
+          tickets: number | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          event_id: string
+          id?: string
+          is_waitlisted?: boolean | null
+          metadata?: Json | null
+          name: string
+          notes?: string | null
+          phone?: string | null
+          photo_url?: string | null
+          response_date?: string | null
+          status?: string | null
+          tickets?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          event_id?: string
+          id?: string
+          is_waitlisted?: boolean | null
+          metadata?: Json | null
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          photo_url?: string | null
+          response_date?: string | null
+          status?: string | null
+          tickets?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       event_products: {
         Row: {
           category: string
@@ -27525,6 +27579,45 @@ export type Database = {
         }
         Relationships: []
       }
+      strategic_notes: {
+        Row: {
+          category: string | null
+          content: string | null
+          created_at: string | null
+          id: string
+          is_archived: boolean | null
+          metadata: Json | null
+          tags: string[] | null
+          title: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          is_archived?: boolean | null
+          metadata?: Json | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          is_archived?: boolean | null
+          metadata?: Json | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       strategy_notes: {
         Row: {
           app_domain: string | null
@@ -33274,6 +33367,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_approvals: {
+        Row: {
+          approval_type: string
+          approved_at: string | null
+          approved_by: string | null
+          created_at: string | null
+          id: string
+          metadata: Json | null
+          rejection_reason: string | null
+          requested_at: string | null
+          status: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          approval_type: string
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          rejection_reason?: string | null
+          requested_at?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          approval_type?: string
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          rejection_reason?: string | null
+          requested_at?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       user_book_chapters: {
         Row: {
