@@ -6,6 +6,7 @@ import { useAuthData } from '@/hooks/useAuth';
 import { TemplateProvider } from '@/contexts/TemplateContext';
 import { CartProvider } from '@/contexts/CartContext';
 import { AuthProvider } from '@/contexts/AuthContext';
+import { TenantProvider } from '@/contexts/TenantContext';
 import { Toaster } from 'sonner';
 import { UniversalEcommerceProvider } from '@/components/integrations/UniversalEcommerceIntegration';
 import { GAPCommandProvider } from '@/components/integrations/GAPCommandSSO';
@@ -45,22 +46,24 @@ const AppWithAuth = () => {
       sacredFireProtection: true
     }}>
       <AuthProvider value={authValue}>
-        <CartProvider>
-          <TemplateProvider>
-            <UniversalEcommerceProvider>
-              <GAPCommandProvider>
-                <PANDABProvider>
-                  <OneStreamCheckoutProvider>
-                    <div className="min-h-screen bg-background">
-                      <AppRoutes />
-                      <Toaster />
-                    </div>
-                  </OneStreamCheckoutProvider>
-                </PANDABProvider>
-              </GAPCommandProvider>
-            </UniversalEcommerceProvider>
-          </TemplateProvider>
-        </CartProvider>
+        <TenantProvider>
+          <CartProvider>
+            <TemplateProvider>
+              <UniversalEcommerceProvider>
+                <GAPCommandProvider>
+                  <PANDABProvider>
+                    <OneStreamCheckoutProvider>
+                      <div className="min-h-screen bg-background">
+                        <AppRoutes />
+                        <Toaster />
+                      </div>
+                    </OneStreamCheckoutProvider>
+                  </PANDABProvider>
+                </GAPCommandProvider>
+              </UniversalEcommerceProvider>
+            </TemplateProvider>
+          </CartProvider>
+        </TenantProvider>
       </AuthProvider>
     </SFIOUniversalWrapper>
   );

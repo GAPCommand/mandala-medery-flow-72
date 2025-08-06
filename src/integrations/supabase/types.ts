@@ -14049,6 +14049,7 @@ export type Database = {
           phone: string | null
           pricing_tier: string | null
           status: string | null
+          tenant_id: string | null
           territory: string | null
           updated_at: string | null
         }
@@ -14067,6 +14068,7 @@ export type Database = {
           phone?: string | null
           pricing_tier?: string | null
           status?: string | null
+          tenant_id?: string | null
           territory?: string | null
           updated_at?: string | null
         }
@@ -14085,10 +14087,19 @@ export type Database = {
           phone?: string | null
           pricing_tier?: string | null
           status?: string | null
+          tenant_id?: string | null
           territory?: string | null
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "mandala_distributors_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "sacred_tenants"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       mandala_inventory_batches: {
         Row: {
@@ -14105,6 +14116,7 @@ export type Database = {
           sacred_honey_source: string
           status: string | null
           storage_location: string | null
+          tenant_id: string | null
           updated_at: string | null
         }
         Insert: {
@@ -14121,6 +14133,7 @@ export type Database = {
           sacred_honey_source: string
           status?: string | null
           storage_location?: string | null
+          tenant_id?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -14137,6 +14150,7 @@ export type Database = {
           sacred_honey_source?: string
           status?: string | null
           storage_location?: string | null
+          tenant_id?: string | null
           updated_at?: string | null
         }
         Relationships: [
@@ -14145,6 +14159,13 @@ export type Database = {
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "mandala_products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mandala_inventory_batches_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "sacred_tenants"
             referencedColumns: ["id"]
           },
         ]
@@ -14250,6 +14271,7 @@ export type Database = {
           shipping_method: string | null
           subtotal: number
           tax_amount: number | null
+          tenant_id: string | null
           total_amount: number
           tracking_number: string | null
           updated_at: string | null
@@ -14273,6 +14295,7 @@ export type Database = {
           shipping_method?: string | null
           subtotal?: number
           tax_amount?: number | null
+          tenant_id?: string | null
           total_amount?: number
           tracking_number?: string | null
           updated_at?: string | null
@@ -14296,6 +14319,7 @@ export type Database = {
           shipping_method?: string | null
           subtotal?: number
           tax_amount?: number | null
+          tenant_id?: string | null
           total_amount?: number
           tracking_number?: string | null
           updated_at?: string | null
@@ -14315,6 +14339,13 @@ export type Database = {
             referencedRelation: "mandala_inventory_locations"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "mandala_orders_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "sacred_tenants"
+            referencedColumns: ["id"]
+          },
         ]
       }
       mandala_performance_metrics: {
@@ -14332,6 +14363,7 @@ export type Database = {
           performance_rating: string | null
           period_end: string
           period_start: string
+          tenant_id: string | null
         }
         Insert: {
           benchmark_value?: number | null
@@ -14347,6 +14379,7 @@ export type Database = {
           performance_rating?: string | null
           period_end: string
           period_start: string
+          tenant_id?: string | null
         }
         Update: {
           benchmark_value?: number | null
@@ -14362,8 +14395,17 @@ export type Database = {
           performance_rating?: string | null
           period_end?: string
           period_start?: string
+          tenant_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "mandala_performance_metrics_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "sacred_tenants"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       mandala_product_inventory: {
         Row: {
@@ -14434,6 +14476,7 @@ export type Database = {
           retail_msrp: number
           sacred_attributes: Json | null
           tags: string[] | null
+          tenant_id: string | null
           updated_at: string | null
           volume_ml: number | null
           wholesale_price: number
@@ -14452,6 +14495,7 @@ export type Database = {
           retail_msrp: number
           sacred_attributes?: Json | null
           tags?: string[] | null
+          tenant_id?: string | null
           updated_at?: string | null
           volume_ml?: number | null
           wholesale_price: number
@@ -14470,11 +14514,20 @@ export type Database = {
           retail_msrp?: number
           sacred_attributes?: Json | null
           tags?: string[] | null
+          tenant_id?: string | null
           updated_at?: string | null
           volume_ml?: number | null
           wholesale_price?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "mandala_products_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "sacred_tenants"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       mandala_reorder_rules: {
         Row: {
@@ -14606,6 +14659,7 @@ export type Database = {
           is_active: boolean | null
           population_density: string | null
           target_revenue: number | null
+          tenant_id: string | null
           territory_code: string
           territory_name: string
           updated_at: string | null
@@ -14620,6 +14674,7 @@ export type Database = {
           is_active?: boolean | null
           population_density?: string | null
           target_revenue?: number | null
+          tenant_id?: string | null
           territory_code: string
           territory_name: string
           updated_at?: string | null
@@ -14634,6 +14689,7 @@ export type Database = {
           is_active?: boolean | null
           population_density?: string | null
           target_revenue?: number | null
+          tenant_id?: string | null
           territory_code?: string
           territory_name?: string
           updated_at?: string | null
@@ -14644,6 +14700,13 @@ export type Database = {
             columns: ["assigned_rep_id"]
             isOneToOne: false
             referencedRelation: "mandala_distributors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mandala_sales_territories_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "sacred_tenants"
             referencedColumns: ["id"]
           },
         ]
@@ -14664,6 +14727,7 @@ export type Database = {
           shipment_type: string | null
           shipped_at: string | null
           status: string | null
+          tenant_id: string | null
           tracking_number: string | null
           updated_at: string | null
         }
@@ -14682,6 +14746,7 @@ export type Database = {
           shipment_type?: string | null
           shipped_at?: string | null
           status?: string | null
+          tenant_id?: string | null
           tracking_number?: string | null
           updated_at?: string | null
         }
@@ -14700,6 +14765,7 @@ export type Database = {
           shipment_type?: string | null
           shipped_at?: string | null
           status?: string | null
+          tenant_id?: string | null
           tracking_number?: string | null
           updated_at?: string | null
         }
@@ -14709,6 +14775,13 @@ export type Database = {
             columns: ["order_id"]
             isOneToOne: false
             referencedRelation: "mandala_orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mandala_shipments_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "sacred_tenants"
             referencedColumns: ["id"]
           },
         ]
@@ -36093,6 +36166,10 @@ export type Database = {
           territory_id: string
           commission_rate: number
         }[]
+      }
+      get_current_tenant_id: {
+        Args: Record<PropertyKey, never>
+        Returns: string
       }
       get_current_user_id_safe: {
         Args: Record<PropertyKey, never>

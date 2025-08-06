@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from "@/integrations/supabase/client";
+import { useTenant } from "@/contexts/TenantContext";
 
 export interface MandalaProduct {
   id: string;
@@ -90,6 +91,7 @@ export interface MandalaShipment {
 }
 
 export const useMandalaData = () => {
+  const { currentTenant } = useTenant();
   const [products, setProducts] = useState<MandalaProduct[]>([]);
   const [distributors, setDistributors] = useState<MandalaDistributor[]>([]);
   const [orders, setOrders] = useState<MandalaOrder[]>([]);
@@ -101,11 +103,14 @@ export const useMandalaData = () => {
   const [error, setError] = useState<string | null>(null);
 
   const fetchProducts = async () => {
+    if (!currentTenant?.id) return;
+    
     try {
-      console.log('Fetching products...');
+      console.log('Fetching products for tenant:', currentTenant.id);
       const { data, error } = await supabase
         .from('mandala_products')
         .select('*')
+        .eq('tenant_id', currentTenant.id)
         .eq('is_active', true);
       
       if (error) {
@@ -121,11 +126,14 @@ export const useMandalaData = () => {
   };
 
   const fetchDistributors = async () => {
+    if (!currentTenant?.id) return;
+    
     try {
-      console.log('Fetching distributors...');
+      console.log('Fetching distributors for tenant:', currentTenant.id);
       const { data, error } = await supabase
         .from('mandala_distributors')
-        .select('*');
+        .select('*')
+        .eq('tenant_id', currentTenant.id);
       
       if (error) {
         console.error('Distributors fetch error:', error);
@@ -140,14 +148,17 @@ export const useMandalaData = () => {
   };
 
   const fetchOrders = async () => {
+    if (!currentTenant?.id) return;
+    
     try {
-      console.log('Fetching orders...');
+      console.log('Fetching orders for tenant:', currentTenant.id);
       const { data, error } = await supabase
         .from('mandala_orders')
         .select(`
           *,
           distributor:mandala_distributors(*)
         `)
+        .eq('tenant_id', currentTenant.id)
         .order('order_date', { ascending: false });
       
       if (error) {
@@ -163,11 +174,14 @@ export const useMandalaData = () => {
   };
 
   const fetchInventoryBatches = async () => {
+    if (!currentTenant?.id) return;
+    
     try {
-      console.log('Fetching inventory batches...');
+      console.log('Fetching inventory batches for tenant:', currentTenant.id);
       const { data, error } = await supabase
         .from('mandala_inventory_batches')
         .select('*')
+        .eq('tenant_id', currentTenant.id)
         .order('production_date', { ascending: false });
       
       if (error) {
@@ -183,11 +197,14 @@ export const useMandalaData = () => {
   };
 
   const fetchSalesTerritories = async () => {
+    if (!currentTenant?.id) return;
+    
     try {
-      console.log('Fetching sales territories...');
+      console.log('Fetching sales territories for tenant:', currentTenant.id);
       const { data, error } = await supabase
         .from('mandala_sales_territories')
         .select('*')
+        .eq('tenant_id', currentTenant.id)
         .eq('is_active', true)
         .order('territory_name');
       
@@ -204,11 +221,14 @@ export const useMandalaData = () => {
   };
 
   const fetchPerformanceMetrics = async () => {
+    if (!currentTenant?.id) return;
+    
     try {
-      console.log('Fetching performance metrics...');
+      console.log('Fetching performance metrics for tenant:', currentTenant.id);
       const { data, error } = await supabase
         .from('mandala_performance_metrics')
         .select('*')
+        .eq('tenant_id', currentTenant.id)
         .order('calculated_at', { ascending: false })
         .limit(20);
       
@@ -225,11 +245,14 @@ export const useMandalaData = () => {
   };
 
   const fetchShipments = async () => {
+    if (!currentTenant?.id) return;
+    
     try {
-      console.log('Fetching shipments...');
+      console.log('Fetching shipments for tenant:', currentTenant.id);
       const { data, error } = await supabase
         .from('mandala_shipments')
         .select('*')
+        .eq('tenant_id', currentTenant.id)
         .order('created_at', { ascending: false });
       
       if (error) {
@@ -246,11 +269,16 @@ export const useMandalaData = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!currentTenant?.id) {
+        setLoading(false);
+        return;
+      }
+      
       setLoading(true);
       setError(null);
       
       try {
-        console.log('Starting data fetch...');
+        console.log('Starting data fetch for tenant:', currentTenant.id);
         await Promise.all([
           fetchProducts(),
           fetchDistributors(),
@@ -270,7 +298,7 @@ export const useMandalaData = () => {
     };
 
     fetchData();
-  }, []);
+  }, [currentTenant?.id]);
 
   return {
     products,
