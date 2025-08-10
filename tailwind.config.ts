@@ -61,12 +61,25 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Template Brand Colors
+				'template-brand': {
+					primary: 'hsl(var(--template-brand-primary))',
+					secondary: 'hsl(var(--template-brand-secondary))',
+					accent: 'hsl(var(--template-brand-accent))',
+					background: 'hsl(var(--template-brand-background))',
+					foreground: 'hsl(var(--template-brand-foreground))'
 				}
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			backgroundImage: {
+				'template-gradient-primary': 'var(--template-gradient-primary)',
+				'template-gradient-hero': 'var(--template-gradient-hero)',
+				'template-gradient-card': 'var(--template-gradient-card)'
 			},
 			keyframes: {
 				'accordion-down': {

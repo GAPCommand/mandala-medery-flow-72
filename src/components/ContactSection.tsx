@@ -6,6 +6,8 @@ import ContactForm from './contact/ContactForm';
 import DistributorBenefits from './contact/DistributorBenefits';
 import ContactInfo from './contact/ContactInfo';
 import ResponsePromise from './contact/ResponsePromise';
+import { TemplateBrandName } from '@/components/template/TemplateBrandName';
+import { TemplateTagline } from '@/components/template/TemplateTagline';
 
 const ContactSection = () => {
   return (
@@ -18,7 +20,7 @@ const ContactSection = () => {
               🍯 Join Our Sacred Distribution Network
             </h2>
             <p className="text-xl text-gray-700 mb-4 max-w-3xl mx-auto">
-              Partner with Mandala Medery to bring consciousness-driven, premium Kashmir mead to your territory. 
+              Partner with <TemplateBrandName fallback="Mandala Medery" /> to bring consciousness-driven, premium <TemplateTagline fallback="Kashmir mead" /> to your territory. 
               Experience exclusive distributor benefits and territorial protection.
             </p>
             <div className="flex justify-center items-center space-x-2 text-amber-600">

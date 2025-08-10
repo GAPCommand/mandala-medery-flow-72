@@ -37,20 +37,30 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Template Brand Colors - Override with deployment-specific values */
+    --template-brand-primary: var(--primary, 35 91% 65%);
+    --template-brand-secondary: var(--secondary, 25 95% 53%);
+    --template-brand-accent: var(--accent, 12 76% 61%);
+    --template-brand-background: var(--background, 48 100% 95%);
+    --template-brand-foreground: var(--foreground, 25 95% 15%);
+    
+    /* Template Gradients */
+    --template-gradient-primary: linear-gradient(135deg, hsl(var(--template-brand-primary)), hsl(var(--template-brand-secondary)));
+    --template-gradient-hero: linear-gradient(135deg, hsl(var(--template-brand-background)), hsl(var(--template-brand-primary) / 0.1));
+    --template-gradient-card: linear-gradient(135deg, hsl(var(--template-brand-background)), hsl(var(--template-brand-accent) / 0.05));
+    
+    /* Template Logo */
+    --template-logo-url: var(--logo-url, '');
+    --template-logo-width: var(--logo-width, '2rem');
+    --template-logo-height: var(--logo-height, '2rem');
   }
 
   .dark {
@@ -89,6 +99,13 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Dark mode template brand colors */
+    --template-brand-primary: var(--primary, 35 91% 45%);
+    --template-brand-secondary: var(--secondary, 25 95% 35%);
+    --template-brand-accent: var(--accent, 12 76% 41%);
+    --template-brand-background: var(--background, 25 95% 5%);
+    --template-brand-foreground: var(--foreground, 48 100% 95%);
   }
 }
 
@@ -100,4 +117,9 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Template Theme Injection - Applied via JavaScript */
+.template-theme-injected {
+  /* This class is applied when template colors are injected */
 }

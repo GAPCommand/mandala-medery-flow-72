@@ -5,6 +5,9 @@ import { useAuthContext } from '@/contexts/AuthContext';
 import { Button } from "@/components/ui/button";
 import UserMenuDropdown from './layout/UserMenuDropdown';
 import { Package, ChefHat } from 'lucide-react';
+import { TemplateBrandName } from '@/components/template/TemplateBrandName';
+import { TemplateTagline } from '@/components/template/TemplateTagline';
+import { TemplateLogo } from '@/components/template/TemplateLogo';
 
 const Header = () => {
   const { user, userRoles } = useAuthContext();
@@ -66,17 +69,24 @@ const Header = () => {
             
             <Link to="/" className="flex items-center space-x-4">
               {/* Sacred Mandala Symbol */}
-              <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg">
-                <div className="w-8 h-8 border-2 border-white rounded-full flex items-center justify-center">
-                  <div className="w-3 h-3 bg-white rounded-full"></div>
-                </div>
-              </div>
+              <TemplateLogo 
+                size="lg"
+                fallback={
+                  <div className="w-12 h-12 bg-template-gradient-primary rounded-full flex items-center justify-center shadow-lg">
+                    <div className="w-8 h-8 border-2 border-white rounded-full flex items-center justify-center">
+                      <div className="w-3 h-3 bg-white rounded-full"></div>
+                    </div>
+                  </div>
+                }
+              />
               
               <div>
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-amber-200 to-orange-200 bg-clip-text text-transparent">
-                  Mandala Medery
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-template-brand-primary/80 to-template-brand-secondary/80 bg-clip-text text-transparent">
+                  <TemplateBrandName fallback="Mandala Medery" />
                 </h1>
-                <p className="text-amber-200 text-sm">Sacred Kashmir Mead • Oakland Distribution Hub</p>
+                <p className="text-template-brand-primary/80 text-sm">
+                  <TemplateTagline fallback="Sacred Kashmir Mead" /> • <span className="text-template-brand-secondary/70">Distribution Hub</span>
+                </p>
               </div>
             </Link>
           </div>

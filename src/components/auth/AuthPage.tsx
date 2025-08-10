@@ -8,6 +8,9 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { TemplateBrandName } from '@/components/template/TemplateBrandName';
+import { TemplateTagline } from '@/components/template/TemplateTagline';
+import { TemplateLogo } from '@/components/template/TemplateLogo';
 
 const AuthPage = () => {
   const { user, signIn, signUp, resetPassword, loading } = useAuth();
@@ -96,16 +99,21 @@ const AuthPage = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 to-orange-100 p-4">
       <Card className="w-full max-w-md shadow-2xl border-0 bg-white/95 backdrop-blur">
         <CardHeader className="text-center space-y-4">
-          <div className="mx-auto w-16 h-16 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg">
-            <div className="w-10 h-10 border-2 border-white rounded-full flex items-center justify-center">
-              <div className="w-4 h-4 bg-white rounded-full"></div>
-            </div>
-          </div>
+          <TemplateLogo 
+            size="lg"
+            fallback={
+              <div className="mx-auto w-16 h-16 bg-template-gradient-primary rounded-full flex items-center justify-center shadow-lg">
+                <div className="w-10 h-10 border-2 border-white rounded-full flex items-center justify-center">
+                  <div className="w-4 h-4 bg-white rounded-full"></div>
+                </div>
+              </div>
+            }
+          />
           <div>
-            <CardTitle className="text-2xl font-bold bg-gradient-to-r from-amber-700 to-orange-700 bg-clip-text text-transparent">
-              Mandala Medery
+            <CardTitle className="text-2xl font-bold bg-gradient-to-r from-template-brand-primary to-template-brand-secondary bg-clip-text text-transparent">
+              <TemplateBrandName fallback="Mandala Medery" />
             </CardTitle>
-            <p className="text-amber-600 text-sm mt-1">Sacred Kashmir Mead • Oakland Distribution</p>
+            <p className="text-template-brand-primary/80 text-sm mt-1"><TemplateTagline fallback="Sacred Kashmir Mead" /> • Distribution Portal</p>
           </div>
         </CardHeader>
         
