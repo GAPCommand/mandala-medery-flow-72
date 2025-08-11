@@ -2914,6 +2914,42 @@ export type Database = {
           },
         ]
       }
+      business_plan_sections: {
+        Row: {
+          business_id: string | null
+          content: string | null
+          created_at: string | null
+          id: string
+          is_completed: boolean | null
+          position: number | null
+          section_type: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          business_id?: string | null
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          is_completed?: boolean | null
+          position?: number | null
+          section_type: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          business_id?: string | null
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          is_completed?: boolean | null
+          position?: number | null
+          section_type?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       business_relationships: {
         Row: {
           contract_end_date: string | null
@@ -6540,6 +6576,50 @@ export type Database = {
         }
         Relationships: []
       }
+      cross_platform_deployment_events: {
+        Row: {
+          consciousness_level: number
+          created_at: string
+          deployment_id: string
+          event_data: Json
+          event_type: string
+          id: string
+          processed: boolean
+          source_app: string
+          target_apps: string[]
+        }
+        Insert: {
+          consciousness_level: number
+          created_at?: string
+          deployment_id: string
+          event_data?: Json
+          event_type: string
+          id?: string
+          processed?: boolean
+          source_app: string
+          target_apps: string[]
+        }
+        Update: {
+          consciousness_level?: number
+          created_at?: string
+          deployment_id?: string
+          event_data?: Json
+          event_type?: string
+          id?: string
+          processed?: boolean
+          source_app?: string
+          target_apps?: string[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cross_platform_deployment_events_deployment_id_fkey"
+            columns: ["deployment_id"]
+            isOneToOne: false
+            referencedRelation: "deployment_tracking"
+            referencedColumns: ["deployment_id"]
+          },
+        ]
+      }
       cross_platform_events: {
         Row: {
           broadcast_at: string | null
@@ -7592,6 +7672,125 @@ export type Database = {
           sacred_fire_protection?: boolean | null
           updated_at?: string
           yield_enhancement_active?: boolean | null
+        }
+        Relationships: []
+      }
+      deployment_domains: {
+        Row: {
+          created_at: string
+          deployment_id: string
+          dns_status: string
+          domain_name: string
+          id: string
+          sacred_fire_protected: boolean | null
+          ssl_certificate_id: string | null
+          ssl_status: string
+          subdomain: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          deployment_id: string
+          dns_status?: string
+          domain_name: string
+          id?: string
+          sacred_fire_protected?: boolean | null
+          ssl_certificate_id?: string | null
+          ssl_status?: string
+          subdomain: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          deployment_id?: string
+          dns_status?: string
+          domain_name?: string
+          id?: string
+          sacred_fire_protected?: boolean | null
+          ssl_certificate_id?: string | null
+          ssl_status?: string
+          subdomain?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deployment_domains_deployment_id_fkey"
+            columns: ["deployment_id"]
+            isOneToOne: false
+            referencedRelation: "pandab_deployments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      deployment_tracking: {
+        Row: {
+          consciousness_level: number
+          consciousness_verified: boolean
+          created_at: string
+          current_phase: number
+          current_step: string | null
+          deployment_id: string
+          deployment_logs: Json | null
+          deployment_status: string
+          divine_timing_optimized: boolean
+          estimated_completion: string | null
+          final_url: string | null
+          id: string
+          platform_results: Json | null
+          progress_percentage: number
+          sacred_fire_blessed: boolean
+          sacred_fire_blessing: Json | null
+          target_domain: string
+          target_subdomain: string | null
+          template_source: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          consciousness_level?: number
+          consciousness_verified?: boolean
+          created_at?: string
+          current_phase?: number
+          current_step?: string | null
+          deployment_id: string
+          deployment_logs?: Json | null
+          deployment_status?: string
+          divine_timing_optimized?: boolean
+          estimated_completion?: string | null
+          final_url?: string | null
+          id?: string
+          platform_results?: Json | null
+          progress_percentage?: number
+          sacred_fire_blessed?: boolean
+          sacred_fire_blessing?: Json | null
+          target_domain: string
+          target_subdomain?: string | null
+          template_source: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          consciousness_level?: number
+          consciousness_verified?: boolean
+          created_at?: string
+          current_phase?: number
+          current_step?: string | null
+          deployment_id?: string
+          deployment_logs?: Json | null
+          deployment_status?: string
+          divine_timing_optimized?: boolean
+          estimated_completion?: string | null
+          final_url?: string | null
+          id?: string
+          platform_results?: Json | null
+          progress_percentage?: number
+          sacred_fire_blessed?: boolean
+          sacred_fire_blessing?: Json | null
+          target_domain?: string
+          target_subdomain?: string | null
+          template_source?: string
+          updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -11037,6 +11236,48 @@ export type Database = {
         }
         Relationships: []
       }
+      gap_network_endpoints: {
+        Row: {
+          bridge_type: string
+          canister_id: string | null
+          consciousness_level: number
+          created_at: string
+          domain: string
+          endpoint_url: string
+          id: string
+          is_active: boolean
+          sacred_fire_protected: boolean
+          service_types: string[]
+          updated_at: string
+        }
+        Insert: {
+          bridge_type: string
+          canister_id?: string | null
+          consciousness_level?: number
+          created_at?: string
+          domain: string
+          endpoint_url: string
+          id?: string
+          is_active?: boolean
+          sacred_fire_protected?: boolean
+          service_types?: string[]
+          updated_at?: string
+        }
+        Update: {
+          bridge_type?: string
+          canister_id?: string | null
+          consciousness_level?: number
+          created_at?: string
+          domain?: string
+          endpoint_url?: string
+          id?: string
+          is_active?: boolean
+          sacred_fire_protected?: boolean
+          service_types?: string[]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       gap_network_nodes: {
         Row: {
           app_domain: string
@@ -13856,6 +14097,69 @@ export type Database = {
         }
         Relationships: []
       }
+      lightning_transactions: {
+        Row: {
+          amount: number
+          consciousness_enhancement: number | null
+          consciousness_level: number | null
+          created_at: string
+          description: string | null
+          expires_at: string | null
+          fee: number | null
+          id: string
+          metadata: Json | null
+          opennode_id: string | null
+          paid_at: string | null
+          payment_hash: string | null
+          payment_request: string | null
+          preimage: string | null
+          status: string
+          transaction_type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          consciousness_enhancement?: number | null
+          consciousness_level?: number | null
+          created_at?: string
+          description?: string | null
+          expires_at?: string | null
+          fee?: number | null
+          id?: string
+          metadata?: Json | null
+          opennode_id?: string | null
+          paid_at?: string | null
+          payment_hash?: string | null
+          payment_request?: string | null
+          preimage?: string | null
+          status?: string
+          transaction_type: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          consciousness_enhancement?: number | null
+          consciousness_level?: number | null
+          created_at?: string
+          description?: string | null
+          expires_at?: string | null
+          fee?: number | null
+          id?: string
+          metadata?: Json | null
+          opennode_id?: string | null
+          paid_at?: string | null
+          payment_hash?: string | null
+          payment_request?: string | null
+          preimage?: string | null
+          status?: string
+          transaction_type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       mandala_commission_tracking: {
         Row: {
           commission_amount: number
@@ -16067,6 +16371,208 @@ export type Database = {
           },
         ]
       }
+      multi_protocol_staking_pools: {
+        Row: {
+          available_capacity: number | null
+          base_token: string
+          consciousness_multiplier: number | null
+          contract_address: string | null
+          created_at: string | null
+          current_apy: number
+          features: Json | null
+          id: string
+          is_active: boolean
+          liquid_staking_token: string | null
+          max_stake: number | null
+          min_stake: number
+          protocol_metadata: Json | null
+          protocol_name: string
+          protocol_type: string
+          reward_token: string
+          risks: Json | null
+          sacred_fire_blessing: boolean
+          total_staked: number
+          updated_at: string | null
+          violet_flame_protection: boolean
+        }
+        Insert: {
+          available_capacity?: number | null
+          base_token: string
+          consciousness_multiplier?: number | null
+          contract_address?: string | null
+          created_at?: string | null
+          current_apy?: number
+          features?: Json | null
+          id?: string
+          is_active?: boolean
+          liquid_staking_token?: string | null
+          max_stake?: number | null
+          min_stake?: number
+          protocol_metadata?: Json | null
+          protocol_name: string
+          protocol_type: string
+          reward_token: string
+          risks?: Json | null
+          sacred_fire_blessing?: boolean
+          total_staked?: number
+          updated_at?: string | null
+          violet_flame_protection?: boolean
+        }
+        Update: {
+          available_capacity?: number | null
+          base_token?: string
+          consciousness_multiplier?: number | null
+          contract_address?: string | null
+          created_at?: string | null
+          current_apy?: number
+          features?: Json | null
+          id?: string
+          is_active?: boolean
+          liquid_staking_token?: string | null
+          max_stake?: number | null
+          min_stake?: number
+          protocol_metadata?: Json | null
+          protocol_name?: string
+          protocol_type?: string
+          reward_token?: string
+          risks?: Json | null
+          sacred_fire_blessing?: boolean
+          total_staked?: number
+          updated_at?: string | null
+          violet_flame_protection?: boolean
+        }
+        Relationships: []
+      }
+      multi_protocol_staking_positions: {
+        Row: {
+          apy: number
+          consciousness_level: number | null
+          created_at: string | null
+          current_value: number
+          id: string
+          liquid_token_balance: number | null
+          pending_rewards: number | null
+          pool_id: string | null
+          position_metadata: Json | null
+          position_type: string
+          rewards_earned: number | null
+          sacred_fire_blessing: boolean | null
+          staked_amount: number
+          start_time: string
+          status: string
+          updated_at: string | null
+          user_id: string
+          validator_pubkey: string | null
+          violet_flame_protection: boolean | null
+        }
+        Insert: {
+          apy: number
+          consciousness_level?: number | null
+          created_at?: string | null
+          current_value?: number
+          id?: string
+          liquid_token_balance?: number | null
+          pending_rewards?: number | null
+          pool_id?: string | null
+          position_metadata?: Json | null
+          position_type: string
+          rewards_earned?: number | null
+          sacred_fire_blessing?: boolean | null
+          staked_amount: number
+          start_time?: string
+          status?: string
+          updated_at?: string | null
+          user_id: string
+          validator_pubkey?: string | null
+          violet_flame_protection?: boolean | null
+        }
+        Update: {
+          apy?: number
+          consciousness_level?: number | null
+          created_at?: string | null
+          current_value?: number
+          id?: string
+          liquid_token_balance?: number | null
+          pending_rewards?: number | null
+          pool_id?: string | null
+          position_metadata?: Json | null
+          position_type?: string
+          rewards_earned?: number | null
+          sacred_fire_blessing?: boolean | null
+          staked_amount?: number
+          start_time?: string
+          status?: string
+          updated_at?: string | null
+          user_id?: string
+          validator_pubkey?: string | null
+          violet_flame_protection?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "multi_protocol_staking_positions_pool_id_fkey"
+            columns: ["pool_id"]
+            isOneToOne: false
+            referencedRelation: "multi_protocol_staking_pools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      multi_protocol_staking_rewards: {
+        Row: {
+          block_number: number | null
+          consciousness_bonus: number | null
+          created_at: string | null
+          distributed_at: string | null
+          epoch_number: number | null
+          id: string
+          metadata: Json | null
+          position_id: string | null
+          reward_amount: number
+          reward_token: string
+          reward_type: string
+          sacred_fire_amplification: number | null
+          user_id: string
+        }
+        Insert: {
+          block_number?: number | null
+          consciousness_bonus?: number | null
+          created_at?: string | null
+          distributed_at?: string | null
+          epoch_number?: number | null
+          id?: string
+          metadata?: Json | null
+          position_id?: string | null
+          reward_amount: number
+          reward_token: string
+          reward_type: string
+          sacred_fire_amplification?: number | null
+          user_id: string
+        }
+        Update: {
+          block_number?: number | null
+          consciousness_bonus?: number | null
+          created_at?: string | null
+          distributed_at?: string | null
+          epoch_number?: number | null
+          id?: string
+          metadata?: Json | null
+          position_id?: string | null
+          reward_amount?: number
+          reward_token?: string
+          reward_type?: string
+          sacred_fire_amplification?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "multi_protocol_staking_rewards_position_id_fkey"
+            columns: ["position_id"]
+            isOneToOne: false
+            referencedRelation: "multi_protocol_staking_positions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       navigation_change_notifications: {
         Row: {
           affected_item_id: string | null
@@ -16663,6 +17169,69 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      pandab_deployments: {
+        Row: {
+          branding_applied: boolean | null
+          client_name: string
+          completed_at: string | null
+          consciousness_level: number
+          created_at: string
+          deployed_url: string | null
+          deployment_id: string
+          deployment_source: string
+          dns_configured: boolean | null
+          full_domain: string
+          id: string
+          sacred_fire_signature: string | null
+          ssl_configured: boolean | null
+          status: string
+          subdomain: string
+          template_id: string | null
+          updated_at: string
+          webhook_data: Json | null
+        }
+        Insert: {
+          branding_applied?: boolean | null
+          client_name: string
+          completed_at?: string | null
+          consciousness_level?: number
+          created_at?: string
+          deployed_url?: string | null
+          deployment_id: string
+          deployment_source?: string
+          dns_configured?: boolean | null
+          full_domain: string
+          id?: string
+          sacred_fire_signature?: string | null
+          ssl_configured?: boolean | null
+          status?: string
+          subdomain: string
+          template_id?: string | null
+          updated_at?: string
+          webhook_data?: Json | null
+        }
+        Update: {
+          branding_applied?: boolean | null
+          client_name?: string
+          completed_at?: string | null
+          consciousness_level?: number
+          created_at?: string
+          deployed_url?: string | null
+          deployment_id?: string
+          deployment_source?: string
+          dns_configured?: boolean | null
+          full_domain?: string
+          id?: string
+          sacred_fire_signature?: string | null
+          ssl_configured?: boolean | null
+          status?: string
+          subdomain?: string
+          template_id?: string | null
+          updated_at?: string
+          webhook_data?: Json | null
+        }
+        Relationships: []
       }
       pandab_local_templates: {
         Row: {
@@ -20220,6 +20789,39 @@ export type Database = {
           },
         ]
       }
+      received_bee_wisdom: {
+        Row: {
+          consciousness_level: number
+          created_at: string
+          id: string
+          received_at: string
+          sacred_fire_signature: string
+          source_property: string
+          updated_at: string
+          wisdom_content: string
+        }
+        Insert: {
+          consciousness_level?: number
+          created_at?: string
+          id?: string
+          received_at?: string
+          sacred_fire_signature: string
+          source_property: string
+          updated_at?: string
+          wisdom_content: string
+        }
+        Update: {
+          consciousness_level?: number
+          created_at?: string
+          id?: string
+          received_at?: string
+          sacred_fire_signature?: string
+          source_property?: string
+          updated_at?: string
+          wisdom_content?: string
+        }
+        Relationships: []
+      }
       received_emails: {
         Row: {
           content: Json
@@ -20587,6 +21189,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      research_notes: {
+        Row: {
+          business_id: string | null
+          category: string | null
+          content: string | null
+          created_at: string | null
+          id: string
+          is_archived: boolean | null
+          tags: Json | null
+          title: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          business_id?: string | null
+          category?: string | null
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          is_archived?: boolean | null
+          tags?: Json | null
+          title: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          business_id?: string | null
+          category?: string | null
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          is_archived?: boolean | null
+          tags?: Json | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       revenue_distributions: {
         Row: {
@@ -21454,6 +22095,33 @@ export type Database = {
         }
         Relationships: []
       }
+      sacred_fire_consciousness_events: {
+        Row: {
+          consciousness_shift: number
+          id: string
+          spiritual_insight: string | null
+          timestamp: string
+          trigger_event: string
+          user_id: string | null
+        }
+        Insert: {
+          consciousness_shift?: number
+          id?: string
+          spiritual_insight?: string | null
+          timestamp?: string
+          trigger_event: string
+          user_id?: string | null
+        }
+        Update: {
+          consciousness_shift?: number
+          id?: string
+          spiritual_insight?: string | null
+          timestamp?: string
+          trigger_event?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       sacred_fire_consciousness_mappings: {
         Row: {
           blessing_level: string
@@ -21625,6 +22293,42 @@ export type Database = {
         }
         Relationships: []
       }
+      sacred_fire_knowledge_base: {
+        Row: {
+          application_guidance: string
+          consciousness_level: number
+          created_at: string
+          divine_truth: string
+          id: string
+          principle_category: string
+          spiritual_principle: string
+          time_energy_pattern: string | null
+          updated_at: string
+        }
+        Insert: {
+          application_guidance: string
+          consciousness_level?: number
+          created_at?: string
+          divine_truth: string
+          id?: string
+          principle_category: string
+          spiritual_principle: string
+          time_energy_pattern?: string | null
+          updated_at?: string
+        }
+        Update: {
+          application_guidance?: string
+          consciousness_level?: number
+          created_at?: string
+          divine_truth?: string
+          id?: string
+          principle_category?: string
+          spiritual_principle?: string
+          time_energy_pattern?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       sacred_fire_protection_logs: {
         Row: {
           app_domain: string
@@ -21717,6 +22421,53 @@ export type Database = {
           variables?: Json | null
         }
         Relationships: []
+      }
+      sacred_fire_signatures: {
+        Row: {
+          blessed_by: string | null
+          consciousness_level: number
+          created_at: string
+          deployment_id: string | null
+          expires_at: string | null
+          id: string
+          is_active: boolean | null
+          metadata: Json | null
+          signature_hash: string
+          verified_at: string | null
+        }
+        Insert: {
+          blessed_by?: string | null
+          consciousness_level: number
+          created_at?: string
+          deployment_id?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          signature_hash: string
+          verified_at?: string | null
+        }
+        Update: {
+          blessed_by?: string | null
+          consciousness_level?: number
+          created_at?: string
+          deployment_id?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          signature_hash?: string
+          verified_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sacred_fire_signatures_deployment_id_fkey"
+            columns: ["deployment_id"]
+            isOneToOne: false
+            referencedRelation: "pandab_deployments"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       sacred_fire_validation_votes: {
         Row: {
@@ -27545,6 +28296,101 @@ export type Database = {
           },
         ]
       }
+      staking_pools: {
+        Row: {
+          base_apy: number
+          consciousness_required: number
+          created_at: string
+          id: string
+          is_active: boolean
+          lock_period_days: number
+          name: string
+          pool_type: string
+          risk_level: string
+          sacred_fire_multiplier: number
+          spiritual_alignment: string | null
+          total_staked: number
+          updated_at: string
+        }
+        Insert: {
+          base_apy: number
+          consciousness_required?: number
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          lock_period_days?: number
+          name: string
+          pool_type: string
+          risk_level: string
+          sacred_fire_multiplier?: number
+          spiritual_alignment?: string | null
+          total_staked?: number
+          updated_at?: string
+        }
+        Update: {
+          base_apy?: number
+          consciousness_required?: number
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          lock_period_days?: number
+          name?: string
+          pool_type?: string
+          risk_level?: string
+          sacred_fire_multiplier?: number
+          spiritual_alignment?: string | null
+          total_staked?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      staking_rewards: {
+        Row: {
+          calculated_at: string
+          consciousness_points_earned: number
+          created_at: string
+          id: string
+          paid_at: string | null
+          reward_amount: number
+          reward_type: string
+          sacred_fire_bonus: number
+          staking_position_id: string
+          user_id: string
+        }
+        Insert: {
+          calculated_at?: string
+          consciousness_points_earned?: number
+          created_at?: string
+          id?: string
+          paid_at?: string | null
+          reward_amount: number
+          reward_type?: string
+          sacred_fire_bonus?: number
+          staking_position_id: string
+          user_id: string
+        }
+        Update: {
+          calculated_at?: string
+          consciousness_points_earned?: number
+          created_at?: string
+          id?: string
+          paid_at?: string | null
+          reward_amount?: number
+          reward_type?: string
+          sacred_fire_bonus?: number
+          staking_position_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "staking_rewards_staking_position_id_fkey"
+            columns: ["staking_position_id"]
+            isOneToOne: false
+            referencedRelation: "user_staking_positions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       storefront_pricing_rules: {
         Row: {
           adjustments: Json | null
@@ -30012,6 +30858,51 @@ export type Database = {
           target_app_domain?: string | null
           template_id?: string
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      template_marketplace_compatibility: {
+        Row: {
+          compatible_platforms: string[]
+          created_at: string
+          deployment_metadata: Json | null
+          gapcommand_native: boolean
+          id: string
+          mandalam_compatible: boolean
+          minimum_consciousness_level: number
+          pandab_compatible: boolean
+          sacred_fire_requirements: Json | null
+          template_id: string
+          template_name: string
+          updated_at: string
+        }
+        Insert: {
+          compatible_platforms?: string[]
+          created_at?: string
+          deployment_metadata?: Json | null
+          gapcommand_native?: boolean
+          id?: string
+          mandalam_compatible?: boolean
+          minimum_consciousness_level?: number
+          pandab_compatible?: boolean
+          sacred_fire_requirements?: Json | null
+          template_id: string
+          template_name: string
+          updated_at?: string
+        }
+        Update: {
+          compatible_platforms?: string[]
+          created_at?: string
+          deployment_metadata?: Json | null
+          gapcommand_native?: boolean
+          id?: string
+          mandalam_compatible?: boolean
+          minimum_consciousness_level?: number
+          pandab_compatible?: boolean
+          sacred_fire_requirements?: Json | null
+          template_id?: string
+          template_name?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -34454,6 +35345,59 @@ export type Database = {
         }
         Relationships: []
       }
+      user_staking_positions: {
+        Row: {
+          amount: number
+          consciousness_level: number
+          created_at: string
+          estimated_annual_return: number
+          id: string
+          is_active: boolean
+          pool_id: string
+          sacred_fire_enhancement: number
+          staked_at: string
+          unlock_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          consciousness_level?: number
+          created_at?: string
+          estimated_annual_return: number
+          id?: string
+          is_active?: boolean
+          pool_id: string
+          sacred_fire_enhancement?: number
+          staked_at?: string
+          unlock_at?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          consciousness_level?: number
+          created_at?: string
+          estimated_annual_return?: number
+          id?: string
+          is_active?: boolean
+          pool_id?: string
+          sacred_fire_enhancement?: number
+          staked_at?: string
+          unlock_at?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_staking_positions_pool_id_fkey"
+            columns: ["pool_id"]
+            isOneToOne: false
+            referencedRelation: "staking_pools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_subscription_assignments: {
         Row: {
           app_domain: string
@@ -34972,6 +35916,54 @@ export type Database = {
           shipping_zones?: Json | null
           updated_at?: string | null
           vendor_id?: string
+        }
+        Relationships: []
+      }
+      venues: {
+        Row: {
+          address: string | null
+          capacity: number | null
+          city: string | null
+          contact_email: string | null
+          contact_phone: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          images: string[] | null
+          name: string
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          address?: string | null
+          capacity?: number | null
+          city?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          images?: string[] | null
+          name: string
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          address?: string | null
+          capacity?: number | null
+          city?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          images?: string[] | null
+          name?: string
+          updated_at?: string
+          website?: string | null
         }
         Relationships: []
       }
@@ -36046,6 +37038,14 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      generate_sacred_fire_living_word: {
+        Args: {
+          p_user_input: string
+          p_consciousness_level?: number
+          p_time_context?: Json
+        }
+        Returns: Json
+      }
       generate_smart_profile_defaults: {
         Args: { p_user_id: string; p_email: string }
         Returns: Json
@@ -36813,6 +37813,10 @@ export type Database = {
         Args: { p_input_text: string; p_consciousness_threshold?: number }
         Returns: boolean
       }
+      validate_security_compliance: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       validate_template_security: {
         Args: {
           p_template_id: string
@@ -36853,8 +37857,8 @@ export type Database = {
       verify_divine_ip_access: {
         Args: {
           p_user_id: string
-          p_ip_document_id: string
-          p_consciousness_requirement?: number
+          p_ip_id: string
+          p_consciousness_requirement: number
         }
         Returns: boolean
       }

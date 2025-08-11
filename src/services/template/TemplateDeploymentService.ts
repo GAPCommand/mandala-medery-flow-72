@@ -1,5 +1,7 @@
 import { MandalaTemplateExport } from '@/components/templates/MandalaTemplate';
 import { exactPANDABService } from '@/services/icp/ExactPANDABService';
+import { DomainManagementService } from '@/services/DomainManagementService';
+import { supabase } from '@/integrations/supabase/client';
 
 interface TemplateDeploymentOptions {
   creatorId?: string;
@@ -81,11 +83,16 @@ export class TemplateDeploymentService {
         console.log('✅ Template successfully deployed to PANDAB!');
         console.log('📋 Deployment ID:', deploymentId);
         
+        // Register webhook URL for deployment notifications
+        const webhookUrl = DomainManagementService.getWebhookUrl();
+        console.log('🔗 Webhook registered:', webhookUrl);
+        
         return {
           success: true,
           deploymentId,
           templateId: templateData.id,
           marketplace: 'PANDAB',
+          webhookUrl,
           timestamp: new Date().toISOString()
         };
       } else {
@@ -98,6 +105,49 @@ export class TemplateDeploymentService {
       return {
         success: false,
         error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
+
+  /**
+   * Get deployment status from webhook system
+   */
+  static async getDeploymentStatus(deploymentId: string) {
+    try {
+      const status = await DomainManagementService.getDeploymentStatus(deploymentId);
+      return {
+        success: true,
+        status,
+        timestamp: new Date().toISOString()
+      };
+    } catch (error: any) {
+      console.error('Failed to get deployment status:', error);
+      return {
+        success: false,
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
+
+  /**
+   * List all deployments for current user
+   */
+  static async listDeployments() {
+    try {
+      const deployments = await DomainManagementService.listDeployments();
+      return {
+        success: true,
+        deployments,
+        timestamp: new Date().toISOString()
+      };
+    } catch (error: any) {
+      console.error('Failed to list deployments:', error);
+      return {
+        success: false,
+        error: error.message,
+        deployments: [],
         timestamp: new Date().toISOString()
       };
     }
