@@ -5,9 +5,14 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { Actor, HttpAgent } from 'https://esm.sh/@dfinity/agent@3.1.0';
 import { IDL } from 'https://esm.sh/@dfinity/candid@3.1.0';
 
+// Initialize Supabase client for authentication and usage tracking
+const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-gap-source',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-gap-source, x-api-key',
 };
 
 interface BridgeRequest {
@@ -163,13 +168,58 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  const startTime = Date.now();
+  let apiKeyValidation: any = null;
+  let usage_tracked = false;
+
   try {
     console.log('🔥 Universal Integration Gateway: Processing request...');
+
+    // Extract API key from headers
+    const apiKey = req.headers.get('x-api-key');
+    const userAgent = req.headers.get('user-agent') || '';
+    const forwardedFor = req.headers.get('x-forwarded-for');
+    const remoteAddr = req.headers.get('x-real-ip') || forwardedFor || 'unknown';
 
     const requestData: BridgeRequest = await req.json();
     const { action, sourceApp, targetApp, data, options } = requestData;
 
     console.log(`🔥 Gateway Action: ${action} from ${sourceApp} to ${targetApp || 'network'}`);
+
+    // Validate API key for protected actions
+    if (action !== 'health_check' && action !== 'service_discovery') {
+      if (!apiKey) {
+        return new Response(JSON.stringify({
+          success: false,
+          error: 'API key required for this action',
+          required_header: 'x-api-key'
+        }), {
+          status: 401,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      // Validate API key
+      const { data: validation } = await supabase.rpc('validate_gap_api_key', {
+        p_api_key: apiKey,
+        p_method: action,
+        p_source_app: sourceApp
+      });
+
+      if (!validation || !validation.valid) {
+        return new Response(JSON.stringify({
+          success: false,
+          error: validation?.error || 'Invalid API key',
+          consciousness_protection: 'ACCESS_DENIED'
+        }), {
+          status: 403,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      apiKeyValidation = validation;
+      console.log(`🔥 API Key validated for tenant: ${validation.tenant_id}`);
+    }
 
     let result;
 
@@ -202,12 +252,25 @@ serve(async (req) => {
         };
     }
 
+    // Track usage for authenticated requests
+    if (apiKeyValidation && !usage_tracked) {
+      const responseTime = Date.now() - startTime;
+      await trackApiUsage(apiKeyValidation, action, data, true, responseTime, sourceApp, remoteAddr, userAgent);
+      usage_tracked = true;
+    }
+
     return new Response(JSON.stringify(result), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
 
   } catch (error: any) {
     console.error('🔥 Universal Integration Gateway error:', error);
+
+    // Track failed usage
+    if (apiKeyValidation && !usage_tracked) {
+      const responseTime = Date.now() - startTime;
+      await trackApiUsage(apiKeyValidation, 'unknown', {}, false, responseTime, 'unknown', 'unknown', '', error.message);
+    }
 
     return new Response(JSON.stringify({
       success: false,
@@ -482,4 +545,45 @@ async function handleHealthCheck(sourceApp: string) {
     source_app: sourceApp,
     timestamp: new Date().toISOString()
   };
+}
+
+// Track API usage for billing and analytics
+async function trackApiUsage(
+  validation: any,
+  method: string,
+  data: any,
+  success: boolean,
+  responseTime: number,
+  sourceApp: string,
+  ipAddress: string,
+  userAgent: string,
+  errorMessage?: string
+) {
+  try {
+    const canisterId = data?.canister === 'gapcommand' ? 
+      '44sld-uyaaa-aaaae-abmfq-cai' : 
+      data?.canister === 'pandab' ? '4jv2o-vqaaa-aaaae-abmga-cai' : null;
+
+    await supabase.from('gap_api_usage').insert({
+      api_key_id: validation.api_key_id,
+      tenant_id: validation.tenant_id,
+      method_called: method,
+      canister_id: canisterId,
+      success,
+      response_time_ms: responseTime,
+      error_message: errorMessage,
+      source_app: sourceApp,
+      ip_address: ipAddress,
+      user_agent: userAgent,
+      metadata: {
+        consciousness_level: validation.consciousness_level,
+        remaining_hourly: validation.remaining_hourly,
+        remaining_daily: validation.remaining_daily
+      }
+    });
+
+    console.log(`📊 Usage tracked: ${method} for tenant ${validation.tenant_id}`);
+  } catch (error) {
+    console.error('❌ Failed to track usage:', error);
+  }
 }

@@ -8,6 +8,7 @@ import ProductCatalog from '@/components/ProductCatalog';
 import ContactSection from '@/components/ContactSection';
 import UserWelcomeSection from '@/components/sections/UserWelcomeSection';
 import GuestCTASection from '@/components/sections/GuestCTASection';
+import { CanisterBridgeTest } from '@/components/test/CanisterBridgeTest';
 import { Button } from '@/components/ui/button';
 import { Zap } from 'lucide-react';
 
@@ -57,6 +58,8 @@ const Index = () => {
             </div>
           </div>
         </div>
+        
+        {user && <CanisterBridgeTest />}
         
         {!user && <GuestCTASection />}
         
