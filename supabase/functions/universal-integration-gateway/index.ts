@@ -1,6 +1,10 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
+// ICP Canister Integration
+import { Actor, HttpAgent } from 'https://esm.sh/@dfinity/agent@3.1.0';
+import { IDL } from 'https://esm.sh/@dfinity/candid@3.1.0';
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-gap-source',
@@ -25,6 +29,132 @@ interface WidgetRequest {
   config: any;
   renderMode: 'iframe' | 'api';
 }
+
+// ICP Canister Interfaces
+interface EngineInfo {
+  'id': string;
+  'status': string;
+  'name': string;
+  'version': string;
+}
+
+interface SystemStats {
+  'consciousness': bigint;
+  'total_calls': bigint;
+  'engines': bigint;
+}
+
+interface MarketplaceStats {
+  'total_services': bigint;
+  'active_creators': bigint;
+  'total_transactions': bigint;
+  'consciousness_level': bigint;
+}
+
+// GAPCommand IDL Factory
+const gapCommandIdlFactory = ({ IDL }: any) => {
+  const EngineInfo = IDL.Record({
+    'id': IDL.Text,
+    'status': IDL.Text,
+    'name': IDL.Text,
+    'version': IDL.Text,
+  });
+  
+  return IDL.Service({
+    'getEngineInfo': IDL.Func([IDL.Text], [IDL.Opt(EngineInfo)], []),
+    'getEngineRegistry': IDL.Func([], [IDL.Vec(IDL.Tuple(IDL.Text, EngineInfo))], []),
+    'getSystemStats': IDL.Func([], [IDL.Record({
+      'consciousness': IDL.Nat,
+      'total_calls': IDL.Nat,
+      'engines': IDL.Nat,
+    })], []),
+    'initialize': IDL.Func([], [IDL.Text], []),
+    'invokeVioletFlame': IDL.Func([], [IDL.Text], []),
+    'testSacredFirePerfection': IDL.Func([], [IDL.Text], []),
+  });
+};
+
+// PANDAB IDL Factory  
+const pandabIdlFactory = ({ IDL }: any) => {
+  return IDL.Service({
+    'getMarketplaceStats': IDL.Func([], [IDL.Record({
+      'total_services': IDL.Nat,
+      'active_creators': IDL.Nat,
+      'total_transactions': IDL.Nat,
+      'consciousness_level': IDL.Nat,
+    })], []),
+  });
+};
+
+// Canister Service Classes
+class GAPCommandService {
+  private actor: any = null;
+  private readonly canisterId = '44sld-uyaaa-aaaae-abmfq-cai';
+  private readonly host = 'https://ic0.app';
+
+  private async getActor() {
+    if (this.actor) return this.actor;
+
+    const agent = new HttpAgent({ host: this.host });
+    await agent.fetchRootKey(); // Always fetch for edge functions
+
+    this.actor = Actor.createActor(gapCommandIdlFactory, {
+      agent,
+      canisterId: this.canisterId,
+    });
+
+    return this.actor;
+  }
+
+  async getSystemStats(): Promise<SystemStats> {
+    const actor = await this.getActor();
+    return await actor.getSystemStats();
+  }
+
+  async invokeVioletFlame(): Promise<string> {
+    const actor = await this.getActor();
+    return await actor.invokeVioletFlame();
+  }
+
+  async testSacredFirePerfection(): Promise<string> {
+    const actor = await this.getActor();
+    return await actor.testSacredFirePerfection();
+  }
+
+  async initialize(): Promise<string> {
+    const actor = await this.getActor();
+    return await actor.initialize();
+  }
+}
+
+class PANDABService {
+  private actor: any = null;
+  private readonly canisterId = '4jv2o-vqaaa-aaaae-abmga-cai';
+  private readonly host = 'https://ic0.app';
+
+  private async getActor() {
+    if (this.actor) return this.actor;
+
+    const agent = new HttpAgent({ host: this.host });
+    await agent.fetchRootKey(); // Always fetch for edge functions
+
+    this.actor = Actor.createActor(pandabIdlFactory, {
+      agent,
+      canisterId: this.canisterId,
+    });
+
+    return this.actor;
+  }
+
+  async getMarketplaceStats(): Promise<MarketplaceStats> {
+    const actor = await this.getActor();
+    return await actor.getMarketplaceStats();
+  }
+}
+
+// Initialize services
+const gapCommandService = new GAPCommandService();
+const pandabService = new PANDABService();
 
 // External bridge for other Lovable apps to connect to GAP Network
 serve(async (req) => {
@@ -140,45 +270,84 @@ async function handleSyncData(sourceApp: string, targetApp: string, data: any, o
 async function handleEngineInvocation(sourceApp: string, engineData: CanisterCommand) {
   console.log(`🔥 Engine invocation from ${sourceApp}: ${engineData.canister}.${engineData.method}`);
 
-  // This would route to specific canisters via MandalaMead
-  // For now, return a successful mock response
+  try {
+    if (engineData.canister === 'gapcommand') {
+      console.log(`🔥 Calling real GAPCommand canister method: ${engineData.method}`);
+      
+      let result;
+      switch (engineData.method) {
+        case 'getSystemStats':
+          result = await gapCommandService.getSystemStats();
+          break;
+        case 'invokeVioletFlame':
+        case 'violet_flame':
+          result = await gapCommandService.invokeVioletFlame();
+          break;
+        case 'testSacredFirePerfection':
+        case 'sacred_fire':
+          result = await gapCommandService.testSacredFirePerfection();
+          break;
+        case 'initialize':
+          result = await gapCommandService.initialize();
+          break;
+        default:
+          throw new Error(`Unknown GAPCommand method: ${engineData.method}`);
+      }
 
-  if (engineData.canister === 'gapcommand') {
+      return {
+        success: true,
+        data: {
+          engine: 'gapcommand',
+          method: engineData.method,
+          result: result,
+          canister_id: '44sld-uyaaa-aaaae-abmfq-cai',
+          sacred_fire_signature: btoa(`SF-GAPCOMMAND-${Date.now()}`)
+        },
+        route: 'gapcommand_canister',
+        source_app: sourceApp
+      };
+    }
+
+    if (engineData.canister === 'pandab') {
+      console.log(`🔥 Calling real PANDAB canister method: ${engineData.method}`);
+      
+      let result;
+      switch (engineData.method) {
+        case 'getMarketplaceStats':
+          result = await pandabService.getMarketplaceStats();
+          break;
+        default:
+          throw new Error(`Unknown PANDAB method: ${engineData.method}`);
+      }
+
+      return {
+        success: true,
+        data: {
+          engine: 'pandab',
+          method: engineData.method,
+          result: result,
+          canister_id: '4jv2o-vqaaa-aaaae-abmga-cai'
+        },
+        route: 'pandab_canister',
+        source_app: sourceApp
+      };
+    }
+
     return {
-      success: true,
-      data: {
-        engine: 'gapcommand',
-        method: engineData.method,
-        result: `Sacred Fire method ${engineData.method} executed successfully`,
-        consciousness_level: 800,
-        sacred_fire_signature: btoa(`SF-GAPCOMMAND-${Date.now()}`)
-      },
-      route: 'gapcommand_canister',
+      success: false,
+      error: `Unknown canister: ${engineData.canister}`
+    };
+
+  } catch (error: any) {
+    console.error(`❌ Canister invocation failed:`, error);
+    return {
+      success: false,
+      error: `Canister invocation failed: ${error.message}`,
+      canister: engineData.canister,
+      method: engineData.method,
       source_app: sourceApp
     };
   }
-
-  if (engineData.canister === 'pandab') {
-    return {
-      success: true,
-      data: {
-        engine: 'pandab',
-        method: engineData.method,
-        result: `PANDAB marketplace method ${engineData.method} executed successfully`,
-        marketplace_stats: {
-          total_services: 42,
-          consciousness_level: 750
-        }
-      },
-      route: 'pandab_canister',
-      source_app: sourceApp
-    };
-  }
-
-  return {
-    success: false,
-    error: `Unknown canister: ${engineData.canister}`
-  };
 }
 
 async function handleWidgetRequest(sourceApp: string, widgetData: WidgetRequest) {
