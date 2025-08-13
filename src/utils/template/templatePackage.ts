@@ -82,6 +82,44 @@ export const createCompleteTemplatePackage = () => {
   return {
     ...basePackage,
     
+    // Bridge System Integration
+    bridgeEndpoints: {
+      templateBridge: '/api/bridge',
+      mandalaEngines: '/api/mandala-engines',
+      selfDeployment: '/api/deploy',
+      engineDiscovery: '/api/engines/discover'
+    },
+    
+    engineCapabilities: {
+      mandalaEngines: [
+        'mandala-product-management',
+        'mandala-inventory-control', 
+        'mandala-order-processing',
+        'mandala-distributor-network',
+        'mandala-analytics-engine',
+        'mandala-sacred-protection'
+      ],
+      externalEngines: [
+        'payment-processing',
+        'shipping-calculation',
+        'tax-computation',
+        'fraud-detection'
+      ]
+    },
+    
+    deploymentMethods: {
+      zapierWebhook: {
+        enabled: true,
+        description: 'Customer-triggered deployment via Zapier webhook',
+        steps: ['Configure webhook URL', 'Set domain', 'Trigger deployment']
+      },
+      pandabMarketplace: {
+        enabled: true,
+        description: 'Direct marketplace deployment',
+        templateId: 'mandala-sacred-commerce-v1'
+      }
+    },
+    
     fileStructure: {
       'package.json': {
         name: 'mandala-sacred-commerce-template',
@@ -100,11 +138,13 @@ export const createCompleteTemplatePackage = () => {
         'contexts/': 'React context providers',
         'hooks/': 'Custom React hooks',
         'utils/': 'Utility functions',
-        'integrations/': 'External service integrations'
+        'integrations/': 'External service integrations',
+        'lib/': 'Template engine client and bridge utilities'
       },
       
       'supabase/': {
         'migrations/': 'Database migration files',
+        'functions/': 'Edge functions including bridge APIs',
         'config.toml': 'Supabase configuration'
       },
       
