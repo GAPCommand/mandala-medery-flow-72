@@ -14,7 +14,7 @@ export const useEngineRouter = () => {
       let result: EngineResponse;
 
       if (TEMPLATE_SYSTEM_CONFIG.mockDataEnabled) {
-        result = await engineRouter.getMockData(request.engine, request.method);
+        result = await engineRouter.getMockData(request.engine, request.method, request.parameters);
       } else {
         result = await engineRouter.routeEngineCall(request);
       }

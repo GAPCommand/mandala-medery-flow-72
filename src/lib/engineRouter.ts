@@ -1,5 +1,6 @@
 import { TEMPLATE_SYSTEM_CONFIG, TemplateMode } from '@/config/template.config';
 import { TemplateEngineClient } from './templateEngineClient';
+import { getMockData, simulateApiDelay } from './mockData';
 
 export interface EngineRequest {
   engine: string;
@@ -14,7 +15,7 @@ export interface EngineResponse {
   data?: any;
   error?: string;
   engine_signature?: string;
-  source?: 'local' | 'remote';
+  source?: 'local' | 'remote' | 'mock';
 }
 
 export class EngineRouter {
@@ -98,45 +99,124 @@ export class EngineRouter {
     }
   }
 
-  async getMockData(engine: string, method: string): Promise<EngineResponse> {
-    // Mock data for template development/demos
-    const mockResponses: Record<string, Record<string, any>> = {
-      MandalaProductEngine: {
-        getProducts: {
-          success: true,
-          data: [
-            { id: 'mock-1', name: 'Sacred Honey Mead', price: 4999, consciousness_level: 800 },
-            { id: 'mock-2', name: 'Divine Elixir', price: 7999, consciousness_level: 900 }
-          ]
-        },
-        createProduct: {
-          success: true,
-          data: { id: 'mock-new', name: 'New Product', created: true }
-        }
-      },
-      MandalaInventoryEngine: {
-        getBatchLevels: {
-          success: true,
-          data: [
-            { batch_id: 'B001', current_level: 150, status: 'optimal' },
-            { batch_id: 'B002', current_level: 75, status: 'low' }
-          ]
-        }
-      },
-      MandalaOrderEngine: {
-        getOrders: {
-          success: true,
-          data: [
-            { id: 'O001', status: 'pending', total: 12999, created_at: new Date().toISOString() }
-          ]
-        }
+  async getMockData(engine: string, method: string, parameters?: any): Promise<EngineResponse> {
+    // Simulate API delay for realistic demo
+    await simulateApiDelay(300);
+    
+    try {
+      let data;
+      
+      switch (engine) {
+        case 'MandalaProductEngine':
+          data = this.handleProductMockData(method, parameters);
+          break;
+        case 'MandalaInventoryEngine':
+          data = this.handleInventoryMockData(method, parameters);
+          break;
+        case 'MandalaOrderEngine':
+          data = this.handleOrderMockData(method, parameters);
+          break;
+        case 'MandalaDistributorEngine':
+          data = this.handleDistributorMockData(method, parameters);
+          break;
+        case 'MandalaAnalyticsEngine':
+          data = this.handleAnalyticsMockData(method, parameters);
+          break;
+        default:
+          throw new Error(`Mock engine ${engine} not implemented`);
       }
-    };
+      
+      return {
+        success: true,
+        data,
+        engine_signature: `mock_${engine.toLowerCase()}_v1.0`,
+        source: 'mock'
+      };
+      
+    } catch (error: any) {
+      return {
+        success: false,
+        error: error.message,
+        source: 'mock'
+      };
+    }
+  }
 
-    return mockResponses[engine]?.[method] || {
-      success: false,
-      error: `Mock data not available for ${engine}.${method}`
-    };
+  private handleProductMockData(method: string, parameters?: any) {
+    const products = getMockData('products', parameters?.filters) as any[];
+    
+    switch (method) {
+      case 'getProducts':
+        return products;
+      case 'getProduct':
+        return products.find((p: any) => p.id === parameters?.id) || null;
+      case 'createProduct':
+        return { id: `mock-${Date.now()}`, ...parameters, created: true };
+      case 'updateProduct':
+        return { id: parameters?.id, updated: true };
+      case 'deleteProduct':
+        return { id: parameters?.id, deleted: true };
+      default:
+        throw new Error(`Product method ${method} not supported`);
+    }
+  }
+
+  private handleInventoryMockData(method: string, parameters?: any) {
+    const inventory = getMockData('inventory', parameters?.filters) as any[];
+    
+    switch (method) {
+      case 'getBatchLevels':
+        return inventory;
+      case 'updateInventoryLevels':
+        return { batch_id: parameters?.batch_id, updated: true, new_level: parameters?.level };
+      default:
+        throw new Error(`Inventory method ${method} not supported`);
+    }
+  }
+
+  private handleOrderMockData(method: string, parameters?: any) {
+    const orders = getMockData('orders', parameters?.filters) as any[];
+    
+    switch (method) {
+      case 'getOrders':
+        return orders;
+      case 'getOrder':
+        return orders.find((o: any) => o.id === parameters?.id) || null;
+      case 'createOrder':
+        return { id: `ORD-${Date.now()}`, ...parameters, status: 'pending', created: true };
+      case 'updateOrderStatus':
+        return { id: parameters?.id, status: parameters?.status, updated: true };
+      default:
+        throw new Error(`Order method ${method} not supported`);
+    }
+  }
+
+  private handleDistributorMockData(method: string, parameters?: any) {
+    const distributors = getMockData('distributors', parameters?.filters) as any[];
+    
+    switch (method) {
+      case 'getDistributors':
+        return distributors;
+      case 'createDistributor':
+        return { id: `dist-${Date.now()}`, ...parameters, created: true };
+      default:
+        throw new Error(`Distributor method ${method} not supported`);
+    }
+  }
+
+  private handleAnalyticsMockData(method: string, parameters?: any) {
+    const analytics = getMockData('analytics') as any;
+    
+    switch (method) {
+      case 'getPerformanceMetrics':
+        return analytics.sales_metrics;
+      case 'getSalesReport':
+        return analytics.product_performance;
+      case 'getCustomerInsights':
+        return analytics.customer_insights;
+      default:
+        throw new Error(`Analytics method ${method} not supported`);
+    }
   }
 }
 

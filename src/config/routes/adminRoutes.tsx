@@ -16,6 +16,7 @@ import SettingsPage from '@/pages/SettingsPage';
 import AdminTemplateDeployment from '@/components/admin/AdminTemplateDeployment';
 import TemplateMarketplaceManager from '@/components/admin/TemplateMarketplaceManager';
 import FullTemplateSystemTest from '@/components/test/FullTemplateSystemTest';
+import { TemplateGenerationPanel } from '@/components/admin/TemplateGenerationPanel';
 
 export const adminRoutes = (
   <Route path="/dashboard" element={<DashboardLayout />}>
@@ -32,6 +33,7 @@ export const adminRoutes = (
     <Route path="templates" element={<AdminTemplateDeployment />} />
     <Route path="marketplace" element={<TemplateMarketplaceManager />} />
     <Route path="system-tests" element={<FullTemplateSystemTest />} />
+    <Route path="template-generator" element={<TemplateGenerationPanel />} />
     <Route path="security" element={<SecurityPage />} />
     <Route path="settings" element={<SettingsPage />} />
   </Route>
