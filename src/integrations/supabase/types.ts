@@ -1001,6 +1001,47 @@ export type Database = {
         }
         Relationships: []
       }
+      api_usage_logs: {
+        Row: {
+          api_key_id: string
+          endpoint: string
+          id: string
+          metadata: Json | null
+          method: string
+          response_time_ms: number | null
+          success: boolean
+          timestamp: string
+        }
+        Insert: {
+          api_key_id: string
+          endpoint: string
+          id?: string
+          metadata?: Json | null
+          method: string
+          response_time_ms?: number | null
+          success?: boolean
+          timestamp?: string
+        }
+        Update: {
+          api_key_id?: string
+          endpoint?: string
+          id?: string
+          metadata?: Json | null
+          method?: string
+          response_time_ms?: number | null
+          success?: boolean
+          timestamp?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_usage_logs_api_key_id_fkey"
+            columns: ["api_key_id"]
+            isOneToOne: false
+            referencedRelation: "template_api_keys"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       app_branding_configs: {
         Row: {
           app_domain: string
@@ -1261,6 +1302,190 @@ export type Database = {
           updated_at?: string
           usage_count?: number | null
           version_tag?: string | null
+        }
+        Relationships: []
+      }
+      art_licenses: {
+        Row: {
+          artist_id: string | null
+          artwork_id: string | null
+          consciousness_requirement: number | null
+          created_at: string | null
+          duration_months: number
+          expires_at: string
+          id: string
+          license_type: string
+          price: number
+          sacred_fire_blessed: boolean | null
+          status: string | null
+          territory: string | null
+          updated_at: string | null
+          usage_rights: string[]
+        }
+        Insert: {
+          artist_id?: string | null
+          artwork_id?: string | null
+          consciousness_requirement?: number | null
+          created_at?: string | null
+          duration_months: number
+          expires_at: string
+          id: string
+          license_type: string
+          price: number
+          sacred_fire_blessed?: boolean | null
+          status?: string | null
+          territory?: string | null
+          updated_at?: string | null
+          usage_rights: string[]
+        }
+        Update: {
+          artist_id?: string | null
+          artwork_id?: string | null
+          consciousness_requirement?: number | null
+          created_at?: string | null
+          duration_months?: number
+          expires_at?: string
+          id?: string
+          license_type?: string
+          price?: number
+          sacred_fire_blessed?: boolean | null
+          status?: string | null
+          territory?: string | null
+          updated_at?: string | null
+          usage_rights?: string[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "art_licenses_artwork_id_fkey"
+            columns: ["artwork_id"]
+            isOneToOne: false
+            referencedRelation: "sacred_images"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      artist_payout_methods: {
+        Row: {
+          artist_id: string | null
+          created_at: string | null
+          details: Json
+          id: string
+          is_primary: boolean | null
+          is_verified: boolean | null
+          type: string
+          updated_at: string | null
+        }
+        Insert: {
+          artist_id?: string | null
+          created_at?: string | null
+          details: Json
+          id: string
+          is_primary?: boolean | null
+          is_verified?: boolean | null
+          type: string
+          updated_at?: string | null
+        }
+        Update: {
+          artist_id?: string | null
+          created_at?: string | null
+          details?: Json
+          id?: string
+          is_primary?: boolean | null
+          is_verified?: boolean | null
+          type?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "artist_payout_methods_artist_id_fkey"
+            columns: ["artist_id"]
+            isOneToOne: false
+            referencedRelation: "artist_profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      artist_payouts: {
+        Row: {
+          amount: number
+          artist_id: string | null
+          created_at: string | null
+          id: string
+          processed_at: string | null
+          scheduled_for: string | null
+          source_id: string
+          source_type: string
+          status: string | null
+        }
+        Insert: {
+          amount: number
+          artist_id?: string | null
+          created_at?: string | null
+          id?: string
+          processed_at?: string | null
+          scheduled_for?: string | null
+          source_id: string
+          source_type: string
+          status?: string | null
+        }
+        Update: {
+          amount?: number
+          artist_id?: string | null
+          created_at?: string | null
+          id?: string
+          processed_at?: string | null
+          scheduled_for?: string | null
+          source_id?: string
+          source_type?: string
+          status?: string | null
+        }
+        Relationships: []
+      }
+      artist_profiles: {
+        Row: {
+          artist_name: string
+          bio: string | null
+          consciousness_level: number | null
+          created_at: string | null
+          id: string
+          lifetime_sales: number | null
+          pending_payouts: number | null
+          portfolio_url: string | null
+          rating: number | null
+          sacred_fire_certified: boolean | null
+          total_earnings: number | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          artist_name: string
+          bio?: string | null
+          consciousness_level?: number | null
+          created_at?: string | null
+          id?: string
+          lifetime_sales?: number | null
+          pending_payouts?: number | null
+          portfolio_url?: string | null
+          rating?: number | null
+          sacred_fire_certified?: boolean | null
+          total_earnings?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          artist_name?: string
+          bio?: string | null
+          consciousness_level?: number | null
+          created_at?: string | null
+          id?: string
+          lifetime_sales?: number | null
+          pending_payouts?: number | null
+          portfolio_url?: string | null
+          rating?: number | null
+          sacred_fire_certified?: boolean | null
+          total_earnings?: number | null
+          updated_at?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -5637,6 +5862,89 @@ export type Database = {
         }
         Relationships: []
       }
+      content_snippets: {
+        Row: {
+          content: string
+          created_at: string
+          html_content: string | null
+          id: string
+          metadata: Json | null
+          selection: Json | null
+          source: string
+          source_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          html_content?: string | null
+          id?: string
+          metadata?: Json | null
+          selection?: Json | null
+          source: string
+          source_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          html_content?: string | null
+          id?: string
+          metadata?: Json | null
+          selection?: Json | null
+          source?: string
+          source_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      content_transformations: {
+        Row: {
+          created_at: string
+          destination: string
+          destination_id: string | null
+          id: string
+          snippet_id: string
+          transformation_rules: Json | null
+          transformed_content: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          destination: string
+          destination_id?: string | null
+          id?: string
+          snippet_id: string
+          transformation_rules?: Json | null
+          transformed_content: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          destination?: string
+          destination_id?: string | null
+          id?: string
+          snippet_id?: string
+          transformation_rules?: Json | null
+          transformed_content?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_transformations_snippet_id_fkey"
+            columns: ["snippet_id"]
+            isOneToOne: false
+            referencedRelation: "content_snippets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       content_validations: {
         Row: {
           created_at: string
@@ -9165,6 +9473,63 @@ export type Database = {
         }
         Relationships: []
       }
+      email_analytics: {
+        Row: {
+          campaign_id: string
+          clicked_at: string | null
+          consciousness_resonance_score: number | null
+          created_at: string
+          divine_timing_score: number | null
+          engagement_metrics: Json | null
+          id: string
+          opened_at: string | null
+          recipient_email: string
+          sent_at: string
+          sequence_id: string | null
+        }
+        Insert: {
+          campaign_id: string
+          clicked_at?: string | null
+          consciousness_resonance_score?: number | null
+          created_at?: string
+          divine_timing_score?: number | null
+          engagement_metrics?: Json | null
+          id?: string
+          opened_at?: string | null
+          recipient_email: string
+          sent_at?: string
+          sequence_id?: string | null
+        }
+        Update: {
+          campaign_id?: string
+          clicked_at?: string | null
+          consciousness_resonance_score?: number | null
+          created_at?: string
+          divine_timing_score?: number | null
+          engagement_metrics?: Json | null
+          id?: string
+          opened_at?: string | null
+          recipient_email?: string
+          sent_at?: string
+          sequence_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_analytics_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "email_campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "email_analytics_sequence_id_fkey"
+            columns: ["sequence_id"]
+            isOneToOne: false
+            referencedRelation: "email_sequences"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       email_attachments: {
         Row: {
           content_id: string | null
@@ -9208,6 +9573,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      email_campaigns: {
+        Row: {
+          campaign_name: string
+          campaign_type: string
+          consciousness_level: number
+          created_at: string
+          created_by: string
+          id: string
+          sacred_fire_blessed: boolean
+          status: string
+          target_audience: string
+          trigger_conditions: Json | null
+          updated_at: string
+        }
+        Insert: {
+          campaign_name: string
+          campaign_type: string
+          consciousness_level?: number
+          created_at?: string
+          created_by: string
+          id?: string
+          sacred_fire_blessed?: boolean
+          status?: string
+          target_audience: string
+          trigger_conditions?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          campaign_name?: string
+          campaign_type?: string
+          consciousness_level?: number
+          created_at?: string
+          created_by?: string
+          id?: string
+          sacred_fire_blessed?: boolean
+          status?: string
+          target_audience?: string
+          trigger_conditions?: Json | null
+          updated_at?: string
+        }
+        Relationships: []
       }
       email_delivery_tracking: {
         Row: {
@@ -9564,6 +9971,56 @@ export type Database = {
             columns: ["email_id"]
             isOneToOne: false
             referencedRelation: "emails"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      email_sequences: {
+        Row: {
+          a_b_variant: string | null
+          campaign_id: string
+          conditions: Json | null
+          created_at: string
+          delay_hours: number
+          id: string
+          sacred_timing_optimized: boolean
+          sequence_order: number
+          subject_line: string
+          template_id: string
+          updated_at: string
+        }
+        Insert: {
+          a_b_variant?: string | null
+          campaign_id: string
+          conditions?: Json | null
+          created_at?: string
+          delay_hours?: number
+          id?: string
+          sacred_timing_optimized?: boolean
+          sequence_order: number
+          subject_line: string
+          template_id: string
+          updated_at?: string
+        }
+        Update: {
+          a_b_variant?: string | null
+          campaign_id?: string
+          conditions?: Json | null
+          created_at?: string
+          delay_hours?: number
+          id?: string
+          sacred_timing_optimized?: boolean
+          sequence_order?: number
+          subject_line?: string
+          template_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_sequences_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "email_campaigns"
             referencedColumns: ["id"]
           },
         ]
@@ -14870,6 +15327,110 @@ export type Database = {
         }
         Relationships: []
       }
+      license_purchases: {
+        Row: {
+          artist_id: string | null
+          artist_payout: number
+          artwork_id: string | null
+          buyer_id: string | null
+          expires_at: string
+          id: string
+          license_id: string | null
+          license_terms: string
+          platform_fee: number
+          purchase_price: number
+          purchased_at: string | null
+          signed_agreement_url: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          artist_id?: string | null
+          artist_payout: number
+          artwork_id?: string | null
+          buyer_id?: string | null
+          expires_at: string
+          id: string
+          license_id?: string | null
+          license_terms: string
+          platform_fee: number
+          purchase_price: number
+          purchased_at?: string | null
+          signed_agreement_url?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          artist_id?: string | null
+          artist_payout?: number
+          artwork_id?: string | null
+          buyer_id?: string | null
+          expires_at?: string
+          id?: string
+          license_id?: string | null
+          license_terms?: string
+          platform_fee?: number
+          purchase_price?: number
+          purchased_at?: string | null
+          signed_agreement_url?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "license_purchases_artwork_id_fkey"
+            columns: ["artwork_id"]
+            isOneToOne: false
+            referencedRelation: "sacred_images"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "license_purchases_license_id_fkey"
+            columns: ["license_id"]
+            isOneToOne: false
+            referencedRelation: "art_licenses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      license_usage_logs: {
+        Row: {
+          id: string
+          is_valid: boolean
+          logged_at: string | null
+          purchase_id: string | null
+          usage_context: Json | null
+          usage_type: string
+          violation_details: string | null
+        }
+        Insert: {
+          id?: string
+          is_valid: boolean
+          logged_at?: string | null
+          purchase_id?: string | null
+          usage_context?: Json | null
+          usage_type: string
+          violation_details?: string | null
+        }
+        Update: {
+          id?: string
+          is_valid?: boolean
+          logged_at?: string | null
+          purchase_id?: string | null
+          usage_context?: Json | null
+          usage_type?: string
+          violation_details?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "license_usage_logs_purchase_id_fkey"
+            columns: ["purchase_id"]
+            isOneToOne: false
+            referencedRelation: "license_purchases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lightning_transactions: {
         Row: {
           amount: number
@@ -16228,6 +16789,57 @@ export type Database = {
           },
         ]
       }
+      marketplace_properties: {
+        Row: {
+          api_endpoint: string
+          audience_demographics: Json
+          capabilities: Json
+          commission_rate: number
+          consciousness_requirement: number
+          created_at: string
+          domain: string
+          id: string
+          integration_health: Json
+          integration_status: string
+          name: string
+          performance_metrics: Json
+          sacred_fire_level: number
+          updated_at: string
+        }
+        Insert: {
+          api_endpoint: string
+          audience_demographics?: Json
+          capabilities?: Json
+          commission_rate?: number
+          consciousness_requirement?: number
+          created_at?: string
+          domain: string
+          id?: string
+          integration_health?: Json
+          integration_status?: string
+          name: string
+          performance_metrics?: Json
+          sacred_fire_level?: number
+          updated_at?: string
+        }
+        Update: {
+          api_endpoint?: string
+          audience_demographics?: Json
+          capabilities?: Json
+          commission_rate?: number
+          consciousness_requirement?: number
+          created_at?: string
+          domain?: string
+          id?: string
+          integration_health?: Json
+          integration_status?: string
+          name?: string
+          performance_metrics?: Json
+          sacred_fire_level?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       marketplace_services: {
         Row: {
           availability_config: Json | null
@@ -16618,12 +17230,15 @@ export type Database = {
           creator_id: string | null
           deleted_at: string | null
           edited_at: string | null
+          escalation_status: string | null
           id: string
           message_type: Database["public"]["Enums"]["message_type"]
           metadata: Json | null
           parent_message_id: string | null
           sender_id: string
           stream_id: string
+          subject_category: string | null
+          subject_metadata: Json | null
           tenant_id: string | null
           updated_at: string
         }
@@ -16634,12 +17249,15 @@ export type Database = {
           creator_id?: string | null
           deleted_at?: string | null
           edited_at?: string | null
+          escalation_status?: string | null
           id?: string
           message_type?: Database["public"]["Enums"]["message_type"]
           metadata?: Json | null
           parent_message_id?: string | null
           sender_id: string
           stream_id: string
+          subject_category?: string | null
+          subject_metadata?: Json | null
           tenant_id?: string | null
           updated_at?: string
         }
@@ -16650,12 +17268,15 @@ export type Database = {
           creator_id?: string | null
           deleted_at?: string | null
           edited_at?: string | null
+          escalation_status?: string | null
           id?: string
           message_type?: Database["public"]["Enums"]["message_type"]
           metadata?: Json | null
           parent_message_id?: string | null
           sender_id?: string
           stream_id?: string
+          subject_category?: string | null
+          subject_metadata?: Json | null
           tenant_id?: string | null
           updated_at?: string
         }
@@ -18830,6 +19451,75 @@ export type Database = {
           },
         ]
       }
+      payout_requests: {
+        Row: {
+          amount: number
+          artist_id: string | null
+          completed_date: string | null
+          created_at: string | null
+          currency: string | null
+          failure_reason: string | null
+          id: string
+          net_amount: number
+          payout_method_id: string | null
+          processing_fee: number
+          reference_number: string | null
+          scheduled_date: string
+          source_transactions: string[] | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          amount: number
+          artist_id?: string | null
+          completed_date?: string | null
+          created_at?: string | null
+          currency?: string | null
+          failure_reason?: string | null
+          id: string
+          net_amount: number
+          payout_method_id?: string | null
+          processing_fee: number
+          reference_number?: string | null
+          scheduled_date: string
+          source_transactions?: string[] | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          amount?: number
+          artist_id?: string | null
+          completed_date?: string | null
+          created_at?: string | null
+          currency?: string | null
+          failure_reason?: string | null
+          id?: string
+          net_amount?: number
+          payout_method_id?: string | null
+          processing_fee?: number
+          reference_number?: string | null
+          scheduled_date?: string
+          source_transactions?: string[] | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payout_requests_artist_id_fkey"
+            columns: ["artist_id"]
+            isOneToOne: false
+            referencedRelation: "artist_profiles"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "payout_requests_payout_method_id_fkey"
+            columns: ["payout_method_id"]
+            isOneToOne: false
+            referencedRelation: "artist_payout_methods"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       permissions: {
         Row: {
           category: string | null
@@ -19897,6 +20587,139 @@ export type Database = {
             columns: ["deck_id"]
             isOneToOne: false
             referencedRelation: "presentation_decks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      print_orders: {
+        Row: {
+          artist_id: string | null
+          artist_payout: number
+          artwork_url: string
+          created_at: string | null
+          customer_id: string | null
+          customizations: Json | null
+          fulfillment_provider: string | null
+          id: string
+          print_product: Json
+          printify_data: Json | null
+          printify_order_id: string | null
+          product_id: string | null
+          provider_order_id: string | null
+          status: string | null
+          total_price: number
+          tracking_number: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          artist_id?: string | null
+          artist_payout: number
+          artwork_url: string
+          created_at?: string | null
+          customer_id?: string | null
+          customizations?: Json | null
+          fulfillment_provider?: string | null
+          id: string
+          print_product: Json
+          printify_data?: Json | null
+          printify_order_id?: string | null
+          product_id?: string | null
+          provider_order_id?: string | null
+          status?: string | null
+          total_price: number
+          tracking_number?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          artist_id?: string | null
+          artist_payout?: number
+          artwork_url?: string
+          created_at?: string | null
+          customer_id?: string | null
+          customizations?: Json | null
+          fulfillment_provider?: string | null
+          id?: string
+          print_product?: Json
+          printify_data?: Json | null
+          printify_order_id?: string | null
+          product_id?: string | null
+          provider_order_id?: string | null
+          status?: string | null
+          total_price?: number
+          tracking_number?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "print_orders_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "print_products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      print_products: {
+        Row: {
+          artwork_id: string | null
+          base_price: number
+          colors: string[] | null
+          consciousness_level: number | null
+          created_at: string | null
+          customizations: Json | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          mockup_images: string[] | null
+          name: string
+          print_areas: Json
+          product_type: string
+          sacred_fire_blessing: boolean | null
+          sizes: string[] | null
+          updated_at: string | null
+        }
+        Insert: {
+          artwork_id?: string | null
+          base_price: number
+          colors?: string[] | null
+          consciousness_level?: number | null
+          created_at?: string | null
+          customizations?: Json | null
+          description?: string | null
+          id: string
+          is_active?: boolean | null
+          mockup_images?: string[] | null
+          name: string
+          print_areas?: Json
+          product_type: string
+          sacred_fire_blessing?: boolean | null
+          sizes?: string[] | null
+          updated_at?: string | null
+        }
+        Update: {
+          artwork_id?: string | null
+          base_price?: number
+          colors?: string[] | null
+          consciousness_level?: number | null
+          created_at?: string | null
+          customizations?: Json | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          mockup_images?: string[] | null
+          name?: string
+          print_areas?: Json
+          product_type?: string
+          sacred_fire_blessing?: boolean | null
+          sizes?: string[] | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "print_products_artwork_id_fkey"
+            columns: ["artwork_id"]
+            isOneToOne: false
+            referencedRelation: "sacred_images"
             referencedColumns: ["id"]
           },
         ]
@@ -22103,6 +22926,71 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      revenue_attributions: {
+        Row: {
+          attribution_source: string
+          booking_id: string
+          commission_amount: number
+          commission_rate: number
+          consciousness_bonus: number
+          created_at: string
+          customer_consciousness_level: number
+          gross_amount: number
+          id: string
+          marketplace_id: string
+          marketplace_name: string
+          net_earnings: number
+          platform_fee: number
+          provider_id: string
+          sacred_fire_blessing: boolean
+          service_type: string
+        }
+        Insert: {
+          attribution_source?: string
+          booking_id: string
+          commission_amount?: number
+          commission_rate?: number
+          consciousness_bonus?: number
+          created_at?: string
+          customer_consciousness_level?: number
+          gross_amount?: number
+          id?: string
+          marketplace_id: string
+          marketplace_name: string
+          net_earnings?: number
+          platform_fee?: number
+          provider_id: string
+          sacred_fire_blessing?: boolean
+          service_type: string
+        }
+        Update: {
+          attribution_source?: string
+          booking_id?: string
+          commission_amount?: number
+          commission_rate?: number
+          consciousness_bonus?: number
+          created_at?: string
+          customer_consciousness_level?: number
+          gross_amount?: number
+          id?: string
+          marketplace_id?: string
+          marketplace_name?: string
+          net_earnings?: number
+          platform_fee?: number
+          provider_id?: string
+          sacred_fire_blessing?: boolean
+          service_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "revenue_attributions_marketplace_id_fkey"
+            columns: ["marketplace_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_properties"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       revenue_distributions: {
         Row: {
@@ -25626,6 +26514,45 @@ export type Database = {
           },
         ]
       }
+      sacred_workflows: {
+        Row: {
+          consciousness_level: number
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          is_active: boolean
+          saint_germain_blessing: boolean
+          updated_at: string
+          violet_flame_protection: boolean
+          workflow_name: string
+        }
+        Insert: {
+          consciousness_level?: number
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          saint_germain_blessing?: boolean
+          updated_at?: string
+          violet_flame_protection?: boolean
+          workflow_name: string
+        }
+        Update: {
+          consciousness_level?: number
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          saint_germain_blessing?: boolean
+          updated_at?: string
+          violet_flame_protection?: boolean
+          workflow_name?: string
+        }
+        Relationships: []
+      }
       scheduled_items: {
         Row: {
           consciousness_level: number | null
@@ -26149,6 +27076,53 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      service_provider_presence: {
+        Row: {
+          auto_sync_enabled: boolean
+          created_at: string
+          id: string
+          last_sync_at: string
+          marketplace_id: string
+          performance_data: Json
+          profile_data: Json
+          provider_id: string
+          updated_at: string
+          visibility_settings: Json
+        }
+        Insert: {
+          auto_sync_enabled?: boolean
+          created_at?: string
+          id?: string
+          last_sync_at?: string
+          marketplace_id: string
+          performance_data?: Json
+          profile_data?: Json
+          provider_id: string
+          updated_at?: string
+          visibility_settings?: Json
+        }
+        Update: {
+          auto_sync_enabled?: boolean
+          created_at?: string
+          id?: string
+          last_sync_at?: string
+          marketplace_id?: string
+          performance_data?: Json
+          profile_data?: Json
+          provider_id?: string
+          updated_at?: string
+          visibility_settings?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_provider_presence_marketplace_id_fkey"
+            columns: ["marketplace_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_properties"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       service_providers: {
         Row: {
@@ -29562,6 +30536,41 @@ export type Database = {
         }
         Relationships: []
       }
+      stream_activity_logs: {
+        Row: {
+          activity_type: string
+          created_at: string
+          created_by: string | null
+          id: string
+          metadata: Json | null
+          stream_id: string
+        }
+        Insert: {
+          activity_type: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          metadata?: Json | null
+          stream_id: string
+        }
+        Update: {
+          activity_type?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          metadata?: Json | null
+          stream_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stream_activity_logs_stream_id_fkey"
+            columns: ["stream_id"]
+            isOneToOne: false
+            referencedRelation: "streams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       stream_participants: {
         Row: {
           id: string
@@ -29617,9 +30626,11 @@ export type Database = {
           alert_settings: Json | null
           app_domain: string | null
           archived_at: string | null
+          avatar_url: string | null
           calendar_category: string | null
           calendar_purpose: Json | null
           consciousness_level: number | null
+          cover_url: string | null
           created_at: string
           creator_id: string
           cross_app_accessible: boolean | null
@@ -29662,9 +30673,11 @@ export type Database = {
           alert_settings?: Json | null
           app_domain?: string | null
           archived_at?: string | null
+          avatar_url?: string | null
           calendar_category?: string | null
           calendar_purpose?: Json | null
           consciousness_level?: number | null
+          cover_url?: string | null
           created_at?: string
           creator_id: string
           cross_app_accessible?: boolean | null
@@ -29707,9 +30720,11 @@ export type Database = {
           alert_settings?: Json | null
           app_domain?: string | null
           archived_at?: string | null
+          avatar_url?: string | null
           calendar_category?: string | null
           calendar_purpose?: Json | null
           consciousness_level?: number | null
+          cover_url?: string | null
           created_at?: string
           creator_id?: string
           cross_app_accessible?: boolean | null
@@ -29825,6 +30840,186 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      sub_stream_invitations: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          id: string
+          invitation_message: string | null
+          invited_at: string
+          invitee_id: string
+          inviter_id: string
+          metadata: Json | null
+          parent_stream_id: string
+          responded_at: string | null
+          status: Database["public"]["Enums"]["invitation_status"]
+          sub_stream_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          invitation_message?: string | null
+          invited_at?: string
+          invitee_id: string
+          inviter_id: string
+          metadata?: Json | null
+          parent_stream_id: string
+          responded_at?: string | null
+          status?: Database["public"]["Enums"]["invitation_status"]
+          sub_stream_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          invitation_message?: string | null
+          invited_at?: string
+          invitee_id?: string
+          inviter_id?: string
+          metadata?: Json | null
+          parent_stream_id?: string
+          responded_at?: string | null
+          status?: Database["public"]["Enums"]["invitation_status"]
+          sub_stream_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sub_stream_invitations_parent_stream_id_fkey"
+            columns: ["parent_stream_id"]
+            isOneToOne: false
+            referencedRelation: "streams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sub_stream_invitations_sub_stream_id_fkey"
+            columns: ["sub_stream_id"]
+            isOneToOne: false
+            referencedRelation: "streams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sub_stream_join_requests: {
+        Row: {
+          created_at: string
+          id: string
+          metadata: Json | null
+          parent_stream_id: string
+          request_message: string | null
+          requested_by: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          sub_stream_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          parent_stream_id: string
+          request_message?: string | null
+          requested_by: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          sub_stream_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          parent_stream_id?: string
+          request_message?: string | null
+          requested_by?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          sub_stream_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sub_stream_join_requests_parent_stream_id_fkey"
+            columns: ["parent_stream_id"]
+            isOneToOne: false
+            referencedRelation: "streams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sub_stream_join_requests_sub_stream_id_fkey"
+            columns: ["sub_stream_id"]
+            isOneToOne: false
+            referencedRelation: "streams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subject_escalations: {
+        Row: {
+          created_at: string | null
+          escalated_by: string
+          escalated_stream_id: string | null
+          escalation_metadata: Json | null
+          escalation_reason: string | null
+          id: string
+          members_migrated: Json | null
+          message_count_transferred: number | null
+          original_stream_id: string | null
+          subject_category: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          escalated_by: string
+          escalated_stream_id?: string | null
+          escalation_metadata?: Json | null
+          escalation_reason?: string | null
+          id?: string
+          members_migrated?: Json | null
+          message_count_transferred?: number | null
+          original_stream_id?: string | null
+          subject_category: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          escalated_by?: string
+          escalated_stream_id?: string | null
+          escalation_metadata?: Json | null
+          escalation_reason?: string | null
+          id?: string
+          members_migrated?: Json | null
+          message_count_transferred?: number | null
+          original_stream_id?: string | null
+          subject_category?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subject_escalations_escalated_stream_id_fkey"
+            columns: ["escalated_stream_id"]
+            isOneToOne: false
+            referencedRelation: "streams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subject_escalations_original_stream_id_fkey"
+            columns: ["original_stream_id"]
+            isOneToOne: false
+            referencedRelation: "streams"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       subscribers: {
         Row: {
@@ -31455,6 +32650,45 @@ export type Database = {
         }
         Relationships: []
       }
+      template_api_keys: {
+        Row: {
+          api_key: string
+          created_at: string
+          customer_email: string
+          daily_limit: number
+          expires_at: string | null
+          id: string
+          is_active: boolean
+          metadata: Json | null
+          template_instance_name: string
+          tenant_id: string
+        }
+        Insert: {
+          api_key: string
+          created_at?: string
+          customer_email: string
+          daily_limit?: number
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean
+          metadata?: Json | null
+          template_instance_name: string
+          tenant_id: string
+        }
+        Update: {
+          api_key?: string
+          created_at?: string
+          customer_email?: string
+          daily_limit?: number
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean
+          metadata?: Json | null
+          template_instance_name?: string
+          tenant_id?: string
+        }
+        Relationships: []
+      }
       template_consciousness_evolution: {
         Row: {
           evolution_magnitude: number | null
@@ -31951,6 +33185,56 @@ export type Database = {
             columns: ["template_id"]
             isOneToOne: false
             referencedRelation: "template_definitions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      template_instances: {
+        Row: {
+          api_key_id: string | null
+          configuration: Json | null
+          created_at: string
+          customer_email: string
+          deployment_url: string | null
+          id: string
+          instance_name: string
+          last_accessed_at: string | null
+          metadata: Json | null
+          status: string
+          template_id: string
+        }
+        Insert: {
+          api_key_id?: string | null
+          configuration?: Json | null
+          created_at?: string
+          customer_email: string
+          deployment_url?: string | null
+          id?: string
+          instance_name: string
+          last_accessed_at?: string | null
+          metadata?: Json | null
+          status?: string
+          template_id: string
+        }
+        Update: {
+          api_key_id?: string | null
+          configuration?: Json | null
+          created_at?: string
+          customer_email?: string
+          deployment_url?: string | null
+          id?: string
+          instance_name?: string
+          last_accessed_at?: string | null
+          metadata?: Json | null
+          status?: string
+          template_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "template_instances_api_key_id_fkey"
+            columns: ["api_key_id"]
+            isOneToOne: false
+            referencedRelation: "template_api_keys"
             referencedColumns: ["id"]
           },
         ]
@@ -38416,6 +39700,135 @@ export type Database = {
           },
         ]
       }
+      workflow_actions: {
+        Row: {
+          action_data: Json
+          action_type: string
+          consciousness_amplification: boolean
+          created_at: string
+          delay_minutes: number
+          execution_order: number
+          id: string
+          workflow_id: string
+        }
+        Insert: {
+          action_data?: Json
+          action_type: string
+          consciousness_amplification?: boolean
+          created_at?: string
+          delay_minutes?: number
+          execution_order?: number
+          id?: string
+          workflow_id: string
+        }
+        Update: {
+          action_data?: Json
+          action_type?: string
+          consciousness_amplification?: boolean
+          created_at?: string
+          delay_minutes?: number
+          execution_order?: number
+          id?: string
+          workflow_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_actions_workflow_id_fkey"
+            columns: ["workflow_id"]
+            isOneToOne: false
+            referencedRelation: "sacred_workflows"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workflow_executions: {
+        Row: {
+          completed_at: string | null
+          consciousness_resonance: number
+          created_at: string
+          divine_timing_score: number
+          error_message: string | null
+          id: string
+          started_at: string
+          status: string
+          trigger_data: Json
+          triggered_by: string
+          workflow_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          consciousness_resonance?: number
+          created_at?: string
+          divine_timing_score?: number
+          error_message?: string | null
+          id?: string
+          started_at?: string
+          status?: string
+          trigger_data?: Json
+          triggered_by: string
+          workflow_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          consciousness_resonance?: number
+          created_at?: string
+          divine_timing_score?: number
+          error_message?: string | null
+          id?: string
+          started_at?: string
+          status?: string
+          trigger_data?: Json
+          triggered_by?: string
+          workflow_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_executions_workflow_id_fkey"
+            columns: ["workflow_id"]
+            isOneToOne: false
+            referencedRelation: "sacred_workflows"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workflow_triggers: {
+        Row: {
+          conditions: Json
+          consciousness_requirement: number
+          created_at: string
+          id: string
+          sacred_fire_blessed: boolean
+          trigger_type: string
+          workflow_id: string
+        }
+        Insert: {
+          conditions?: Json
+          consciousness_requirement?: number
+          created_at?: string
+          id?: string
+          sacred_fire_blessed?: boolean
+          trigger_type: string
+          workflow_id: string
+        }
+        Update: {
+          conditions?: Json
+          consciousness_requirement?: number
+          created_at?: string
+          id?: string
+          sacred_fire_blessed?: boolean
+          trigger_type?: string
+          workflow_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_triggers_workflow_id_fkey"
+            columns: ["workflow_id"]
+            isOneToOne: false
+            referencedRelation: "sacred_workflows"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -38635,6 +40048,17 @@ export type Database = {
         }
         Returns: Json
       }
+      create_hierarchy_group_with_visibility: {
+        Args: {
+          p_name: string
+          p_app_domain: string
+          p_parent_group_id?: string
+          p_hierarchy_config_id?: string
+          p_custom_labels?: Json
+          p_visibility?: string
+        }
+        Returns: Json
+      }
       create_image_album_folder: {
         Args: {
           p_user_id: string
@@ -38662,11 +40086,12 @@ export type Database = {
       create_sacred_group_with_perfect_synchronization: {
         Args: {
           p_name: string
-          p_description: string
-          p_category: string
-          p_user_id: string
+          p_description?: string
+          p_category?: string
+          p_user_id?: string
           p_app_domain?: string
           p_parent_stream_id?: string
+          p_visibility?: string
         }
         Returns: Json
       }
@@ -38788,6 +40213,16 @@ export type Database = {
         Args: { p_user_id: string; p_app_domain?: string }
         Returns: string
       }
+      escalate_subject_to_subgroup: {
+        Args: {
+          p_stream_id: string
+          p_subject_category: string
+          p_new_group_name: string
+          p_escalated_by: string
+          p_escalation_reason?: string
+        }
+        Returns: Json
+      }
       establish_violet_flame_bridge: {
         Args: {
           p_user_id: string
@@ -38844,6 +40279,10 @@ export type Database = {
       generate_smart_profile_defaults: {
         Args: { p_user_id: string; p_email: string }
         Returns: Json
+      }
+      generate_template_api_key: {
+        Args: Record<PropertyKey, never>
+        Returns: string
       }
       generate_thread_id: {
         Args: Record<PropertyKey, never>
@@ -39219,6 +40658,10 @@ export type Database = {
         Args: { p_user_id: string }
         Returns: string
       }
+      handle_sub_stream_join_request: {
+        Args: { p_request_id: string; p_action: string; p_reviewer_id?: string }
+        Returns: Json
+      }
       has_bookstream_permission: {
         Args: {
           p_user_id?: string
@@ -39439,6 +40882,14 @@ export type Database = {
         }
         Returns: string
       }
+      request_sub_stream_access: {
+        Args: {
+          p_sub_stream_id: string
+          p_user_id?: string
+          p_request_message?: string
+        }
+        Returns: Json
+      }
       reserve_store_slug: {
         Args: {
           p_slug: string
@@ -39492,6 +40943,16 @@ export type Database = {
           p_mobile_view_id?: string
           p_session_id?: string
           p_metadata?: Json
+        }
+        Returns: string
+      }
+      track_template_api_usage: {
+        Args: {
+          p_api_key: string
+          p_endpoint: string
+          p_method: string
+          p_success?: boolean
+          p_response_time_ms?: number
         }
         Returns: string
       }
@@ -39746,6 +41207,7 @@ export type Database = {
         | "paused"
         | "completed"
         | "cancelled"
+      invitation_status: "pending" | "approved" | "rejected" | "expired"
       listing_type: "new_retail" | "used_individual" | "auction" | "service"
       message_type:
         | "text"
@@ -40051,6 +41513,7 @@ export const Constants = {
         "completed",
         "cancelled",
       ],
+      invitation_status: ["pending", "approved", "rejected", "expired"],
       listing_type: ["new_retail", "used_individual", "auction", "service"],
       message_type: [
         "text",
