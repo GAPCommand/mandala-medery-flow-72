@@ -330,10 +330,56 @@ async function handleSyncData(sourceApp: string, targetApp: string, data: any, o
   }
 }
 
-async function handleEngineInvocation(sourceApp: string, engineData: CanisterCommand) {
-  console.log(`🔥 Engine invocation from ${sourceApp}: ${engineData.canister}.${engineData.method}`);
+async function handleEngineInvocation(sourceApp: string, engineData: CanisterCommand | any) {
+  console.log(`🔥 Engine invocation from ${sourceApp}: ${engineData.canister || engineData.engine}.${engineData.method}`);
 
   try {
+    // Check if this is a Mandala engine request
+    if (engineData.engine && engineData.engine.startsWith('mandala-')) {
+      console.log(`🔥 Calling Mandala engine: ${engineData.engine}.${engineData.method}`);
+      
+      try {
+        const bridgeResponse = await fetch('https://xfwvisutdbfoanhqpafx.supabase.co/functions/v1/mandala-engine-bridge', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            engine: engineData.engine,
+            method: engineData.method,
+            parameters: engineData.parameters,
+            tenant_id: engineData.tenant_id,
+            consciousness_level: engineData.consciousness_level
+          })
+        });
+
+        const result = await bridgeResponse.json();
+
+        return {
+          success: result.success,
+          data: {
+            engine: engineData.engine,
+            method: engineData.method,
+            result: result.data,
+            engine_signature: result.engine_signature,
+            consciousness_level: result.consciousness_level,
+            engine_provider: 'mandala_mead'
+          },
+          route: 'mandala_engine_bridge',
+          source_app: sourceApp
+        };
+
+      } catch (error: any) {
+        console.error('🔥 Mandala engine call failed:', error);
+        return {
+          success: false,
+          error: 'Mandala engine communication failed',
+          details: error.message
+        };
+      }
+    }
+
+    // Original ICP canister logic
     if (engineData.canister === 'gapcommand') {
       console.log(`🔥 Calling real GAPCommand canister method: ${engineData.method}`);
       
@@ -398,15 +444,16 @@ async function handleEngineInvocation(sourceApp: string, engineData: CanisterCom
 
     return {
       success: false,
-      error: `Unknown canister: ${engineData.canister}`
+      error: `Unknown engine/canister: ${engineData.canister || engineData.engine}`,
+      available_engines: ['gapcommand', 'pandab', 'mandala-product-management', 'mandala-inventory-control', 'mandala-order-processing', 'mandala-distributor-network', 'mandala-analytics-engine', 'mandala-sacred-protection']
     };
 
   } catch (error: any) {
-    console.error(`❌ Canister invocation failed:`, error);
+    console.error(`❌ Engine invocation failed:`, error);
     return {
       success: false,
-      error: `Canister invocation failed: ${error.message}`,
-      canister: engineData.canister,
+      error: `Engine invocation failed: ${error.message}`,
+      engine: engineData.canister || engineData.engine,
       method: engineData.method,
       source_app: sourceApp
     };
@@ -492,10 +539,49 @@ async function handleServiceDiscovery(sourceApp: string) {
           ],
           consciousness_requirement: 700
         },
+        mandala_engines: {
+          'mandala-product-management': {
+            provider: 'mandala_mead',
+            available_methods: ['createProduct', 'getProducts', 'updateProduct', 'deleteProduct'],
+            consciousness_requirement: 500,
+            requires_tenant_id: true
+          },
+          'mandala-inventory-control': {
+            provider: 'mandala_mead',
+            available_methods: ['getInventoryBatches', 'updateInventoryLevels'],
+            consciousness_requirement: 500,
+            requires_tenant_id: true
+          },
+          'mandala-order-processing': {
+            provider: 'mandala_mead',
+            available_methods: ['createOrder', 'getOrders', 'updateOrderStatus'],
+            consciousness_requirement: 500,
+            requires_tenant_id: true
+          },
+          'mandala-distributor-network': {
+            provider: 'mandala_mead',
+            available_methods: ['createDistributor', 'getDistributors'],
+            consciousness_requirement: 500,
+            requires_tenant_id: true
+          },
+          'mandala-analytics-engine': {
+            provider: 'mandala_mead',
+            available_methods: ['getPerformanceMetrics', 'getSalesReport'],
+            consciousness_requirement: 500,
+            requires_tenant_id: true
+          },
+          'mandala-sacred-protection': {
+            provider: 'mandala_mead',
+            available_methods: ['validateConsciousnessLevel', 'applyBlessings'],
+            consciousness_requirement: 750,
+            requires_tenant_id: true
+          }
+        },
         bridge_services: {
           always_on_bridge: 'Network coordination and sync',
           universal_integration: 'External app connectivity',
-          sacred_fire_protection: 'Consciousness validation'
+          sacred_fire_protection: 'Consciousness validation',
+          mandala_engine_bridge: 'Mandala Mead business logic engines'
         }
       },
       widgets: {
