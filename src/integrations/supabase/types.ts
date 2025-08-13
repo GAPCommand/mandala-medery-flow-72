@@ -32689,6 +32689,45 @@ export type Database = {
         }
         Relationships: []
       }
+      template_backups: {
+        Row: {
+          backup_id: string
+          backup_size_mb: number | null
+          backup_type: string
+          created_at: string
+          id: string
+          metadata: Json | null
+          retention_days: number
+          rollback_date: string | null
+          template_id: string
+          used_for_rollback: boolean
+        }
+        Insert: {
+          backup_id: string
+          backup_size_mb?: number | null
+          backup_type?: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          retention_days?: number
+          rollback_date?: string | null
+          template_id: string
+          used_for_rollback?: boolean
+        }
+        Update: {
+          backup_id?: string
+          backup_size_mb?: number | null
+          backup_type?: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          retention_days?: number
+          rollback_date?: string | null
+          template_id?: string
+          used_for_rollback?: boolean
+        }
+        Relationships: []
+      }
       template_consciousness_evolution: {
         Row: {
           evolution_magnitude: number | null
@@ -33734,6 +33773,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      template_update_checks: {
+        Row: {
+          checked_at: string
+          current_version: string
+          id: string
+          latest_version: string
+          metadata: Json | null
+          security_updates_available: boolean
+          template_id: string
+          updates_available: boolean
+          user_agent: string | null
+        }
+        Insert: {
+          checked_at?: string
+          current_version: string
+          id?: string
+          latest_version: string
+          metadata?: Json | null
+          security_updates_available?: boolean
+          template_id: string
+          updates_available?: boolean
+          user_agent?: string | null
+        }
+        Update: {
+          checked_at?: string
+          current_version?: string
+          id?: string
+          latest_version?: string
+          metadata?: Json | null
+          security_updates_available?: boolean
+          template_id?: string
+          updates_available?: boolean
+          user_agent?: string | null
+        }
+        Relationships: []
       }
       template_update_rollbacks: {
         Row: {

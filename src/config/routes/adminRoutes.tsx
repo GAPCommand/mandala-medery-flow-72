@@ -17,6 +17,7 @@ import AdminTemplateDeployment from '@/components/admin/AdminTemplateDeployment'
 import TemplateMarketplaceManager from '@/components/admin/TemplateMarketplaceManager';
 import FullTemplateSystemTest from '@/components/test/FullTemplateSystemTest';
 import { TemplateGenerationPanel } from '@/components/admin/TemplateGenerationPanel';
+import { TemplateUpdatePanel } from '@/components/admin/TemplateUpdatePanel';
 
 export const adminRoutes = (
   <Route path="/dashboard" element={<DashboardLayout />}>
@@ -34,6 +35,7 @@ export const adminRoutes = (
     <Route path="marketplace" element={<TemplateMarketplaceManager />} />
     <Route path="system-tests" element={<FullTemplateSystemTest />} />
     <Route path="template-generator" element={<TemplateGenerationPanel />} />
+    <Route path="template-updates" element={<TemplateUpdatePanel templateId="mandala-mead-master" currentVersion="2.1.0" apiKey="mandala_demo_key" />} />
     <Route path="security" element={<SecurityPage />} />
     <Route path="settings" element={<SettingsPage />} />
   </Route>
